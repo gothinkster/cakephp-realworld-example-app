@@ -155,11 +155,15 @@ class UsersTable extends Table
     {
         if (!empty($options['currentUser'])) {
             $query
-                ->leftJoin(['Follows' => 'follows'], ['Users.id = Follows.followable_id'])
-                ->where(['OR' => [
-                    ['Follows.follower_id' => $options['currentUser']],
-                    ['Follows.follower_id IS' => null],
-                ]])
+                ->leftJoin(['Follows' => 'follows'], [
+                    'Users.id = Follows.followable_id',
+                    [
+                        'OR' => [
+                            ['Follows.follower_id' => $options['currentUser']],
+                            ['Follows.follower_id IS' => null],
+                        ]
+                    ]
+                ])
                 ->select('Follows.id');
         }
 

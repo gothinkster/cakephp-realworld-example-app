@@ -12,11 +12,14 @@
 namespace App\Service\Action\Comment;
 
 use App\Service\Action\ChildArticleAction;
-use Cake\ORM\TableRegistry;
-use CakeDC\Api\Service\Action\CrudAction;
+use Cake\Utility\Hash;
 
 class CommentIndexAction extends ChildArticleAction
 {
+
+    public $extensions = [
+        'AppPaginate'
+    ];
 
     /**
      * Execute action.
@@ -27,9 +30,10 @@ class CommentIndexAction extends ChildArticleAction
     {
         $entities = $this->_getEntities()->toArray();
 		
+        $pagination = $this->service()->getResult()->payload('pagination');
 		return [
 			'comments' => $entities,
-			'commentsCount' => count($entities),
+			'commentsCount' => Hash::get($pagination, 'count'),
 		];
     }
 }

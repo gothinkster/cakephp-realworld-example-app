@@ -69,16 +69,10 @@ class ArticlesService extends FallbackService
         $defaultOptions['id'] = '[a-z0-9_-]+';
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
             $routes->extensions($this->_routeExtensions);
-            $options = $defaultOptions;
-            $options['map'] = array_merge($options['map'], [
-                'describe' => ['action' => 'describe', 'method' => 'OPTIONS', 'path' => ''],
-                'describeId' => ['action' => 'describe', 'method' => 'OPTIONS', 'path' => ':id'],
-            ]);
-            $routes->resources($this->getName(), $options, function ($routes) {
+            $routes->resources($this->getName(), $defaultOptions, function ($routes) {
                 if (is_array($this->_routeExtensions)) {
                     $routes->extensions($this->_routeExtensions);
-                    $options = [];
-                    $routes->resources('Comments', $options);
+                     $routes->resources('Comments');
                 }
             });
         });

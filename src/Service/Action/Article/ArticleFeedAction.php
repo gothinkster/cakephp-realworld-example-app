@@ -11,30 +11,21 @@
 
 namespace App\Service\Action\Article;
 
-use CakeDC\Api\Service\Action\CrudAction;
+use Cake\ORM\Query;
 
-class ArticleFeedAction extends CrudAction
+class ArticleFeedAction extends ArticleIndexBase
 {
 
-    public $extensions = [];
-
     /**
-     * Execute action.
+     * Returns query object
      *
-     * @return mixed
+     * @return Query
      */
-    public function execute()
+    protected function _getQuery()
     {
-        $entities = $this->getTable()
-            ->find('apiFormat', [
-                'feed_by' => $this->Auth->user('id')
-            ])
-            ->all()
-            ->toArray();
-
-		return [
-			'articles' => $entities,
-			'articlesCount' => count($entities),
-		];
+        $user = $this->Auth->identify();
+        return $this->getTable()->find('apiFormat', [
+            'feed_by' => $this->Auth->user('id')
+        ]);
     }
 }

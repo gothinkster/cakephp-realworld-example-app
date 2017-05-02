@@ -55,7 +55,6 @@ return [
                     'Index' => [
                         'Extension' => [
                             // enable pagination for index actions
-                            // 'CakeDC/Api.Paginate',
                             'CakeDC/Api.Cors',
                         ],
                     ],

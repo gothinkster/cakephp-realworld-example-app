@@ -11,12 +11,11 @@
 
 namespace App\Service\Action\Article;
 
-use CakeDC\Api\Service\Action\CrudAction;
+use Cake\ORM\Query;
+use Cake\Utility\Hash;
 
-class ArticleIndexAction extends CrudAction
+class ArticleIndexAction extends ArticleIndexBase
 {
-
-    public $extensions = [];
 
     public function initialize(array $config)
     {
@@ -25,26 +24,18 @@ class ArticleIndexAction extends CrudAction
     }
 
     /**
-     * Execute action.
+     * Returns query object
      *
-     * @return mixed
+     * @return Query
      */
-    public function execute()
+    protected function _getQuery()
     {
         $options = $this->data();
         $user = $this->Auth->identify();
         if ($user) {
             $options['user_id'] = $user['id'];
         }
-        $entities = $this
-            ->getTable()
-            ->find('apiFormat', $options)
-            ->all()
-            ->toArray();
-
-        return [
-            'articles' => $entities,
-            'articlesCount' => count($entities),
-        ];
+        return $this->getTable()->find('apiFormat', $options);
     }
+
 }

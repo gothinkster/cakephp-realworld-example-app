@@ -30,14 +30,13 @@ return [
         'Service' => [
             'default' => [
                 'options' => [
-					'Extension' => [
-						'CakeDC/Api.OptionsHandler'
-					],
-				],
+                    'Extension' => [
+                        'CakeDC/Api.OptionsHandler'
+                    ],
+                ],
                 'Action' => [
                     'default' => [
                         'Auth' => [
-                            // 'allow' => '*',
                             'authorize' => [
                                 'CakeDC/Api.Crud' => []
                             ],
@@ -54,20 +53,9 @@ return [
                     // all index actions configuration
                     'Index' => [
                         'Extension' => [
-                            // enable pagination for index actions
                             'CakeDC/Api.Cors',
                         ],
                     ],
-					'Describe' => [
-                        'Auth' => [
-                            'allow' => '*',
-						]
-					],
-					'DescribeId' => [
-                        'Auth' => [
-                            'allow' => '*',
-						]
-					],
                 ],
             ],
         ],

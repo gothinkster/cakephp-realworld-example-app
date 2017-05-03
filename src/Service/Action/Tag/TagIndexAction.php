@@ -39,7 +39,6 @@ class TagIndexAction extends CrudAction
 
         return [
             'tags' => $entities,
-            'tagsCount' => count($entities),
         ];
     }
 }

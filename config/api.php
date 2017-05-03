@@ -14,7 +14,7 @@ return [
         // if service class is not defined we use crud fallback service
         'ServiceFallback' => '\\CakeDC\\Api\\Service\\FallbackService',
         // response rendered as JSend
-        'renderer' => 'CakeDC/Api.Json',
+        'renderer' => 'AppJson',
         // Data parse from cakephp request object
         'parser' => 'CakeDC/Api.Form',
 

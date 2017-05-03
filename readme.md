@@ -56,8 +56,8 @@ For more information on how to this works with other frontends/backends, head ov
 ## Dependencies
 
 - [cakedc/cakephp-api](https://github.com/cakedc/cakephp-api) - For easy REST api implementation.
-- [muffin/slug](https://github.com/muffin/slug) - For auto generation of unique slugs.
-- [muffin/tags](https://github.com/muffin/tags) - For tags managements.
+- [muffin/slug](https://github.com/UseMuffin/Slug) - For auto generation of unique slugs.
+- [muffin/tags](https://github.com/UseMuffin/Tags) - For tags managements.
 - [cakephp/authentication](https://github.com/cakephp/authentication) - For authentication using JSON Web Tokens
 
 ## Folders

@@ -103,7 +103,7 @@ Refer the [api specification](#api-specification) for more info.
  
 # Authentication
  
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token. Please check the following sources to learn more about JWT.
+This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The cakephp authenticate middleware configured for handling JWT authentication and validation and authentication of the token. Please check the following sources to learn more about JWT.
  
 - https://jwt.io/introduction/
 - https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
@@ -112,7 +112,7 @@ This applications uses JSON Web Token (JWT) to handle authentication. The token 
 
 # Cross-Origin Resource Sharing (CORS)
  
-This applications has CORS enabled by default on all API endpoints. The default configuration allows requests from `http://localhost:3000` and `http://localhost:4200` to help speed up your frontend testing. The CORS allowed origins can be changed by setting them in the config file. Please check the following sources to learn more about CORS.
+This applications has CORS enabled by default on all API endpoints. Please check the following sources to learn more about CORS.
  
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
 - https://en.wikipedia.org/wiki/Cross-origin_resource_sharing

@@ -20,7 +20,7 @@ class ProfileFollowAction extends CrudAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-		$this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::get('Users');
     }
 
     /**

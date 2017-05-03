@@ -38,6 +38,6 @@ class ArticleViewAction extends CrudAction
               ->where(['Articles.slug' => $this->_id])
               ->firstOrFail();
 
-		return ['article' => $record];
+        return ['article' => $record];
     }
 }

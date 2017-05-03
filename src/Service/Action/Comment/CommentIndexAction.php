@@ -29,11 +29,11 @@ class CommentIndexAction extends ChildArticleAction
     public function execute()
     {
         $entities = $this->_getEntities()->toArray();
-		
+
         $pagination = $this->service()->getResult()->payload('pagination');
-		return [
-			'comments' => $entities,
-			'commentsCount' => Hash::get($pagination, 'count'),
-		];
+        return [
+            'comments' => $entities,
+            'commentsCount' => Hash::get($pagination, 'count'),
+        ];
     }
 }

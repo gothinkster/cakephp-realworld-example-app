@@ -201,14 +201,16 @@ class ArticlesTable extends Table
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-					if ($row['author']) {
+                    if ($row['author']) {
                         $row['author'] = $this->Authors->rowFormatter($row['author']);
                     }
                     if ($row['tags']) {
-					    $tags = collection($row['tags'])->map(function ($tag) {
-					        return $tag['tag'];
-                        })->toArray();
-					    unset($row['tags']);
+                        $tags = collection($row['tags'])
+                            ->map(function ($tag) {
+                                return $tag['tag'];
+                            })
+                            ->toArray();
+                        unset($row['tags']);
                         $row['tagList'] = $tags;
                     } else {
                         $row['tagList'] = [];
@@ -220,8 +222,8 @@ class ArticlesTable extends Table
                     }
                     $row['favoritesCount'] = $row['favorites_count'];
 
-					return $row;
-				});
+                    return $row;
+                });
             });
     }
 }

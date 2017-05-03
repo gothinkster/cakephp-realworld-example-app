@@ -36,10 +36,10 @@ class TagIndexAction extends CrudAction
         $entities = $this->_getEntities()->map(function($item) {
             return $item->tag;
         })->toArray();
-		
-		return [
-			'tags' => $entities,
-			'tagsCount' => count($entities),
-		];
+
+        return [
+            'tags' => $entities,
+            'tagsCount' => count($entities),
+        ];
     }
 }

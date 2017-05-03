@@ -114,11 +114,11 @@ class CommentsTable extends Table
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-					if ($row['author']) {
+                    if ($row['author']) {
                         $row['author'] = Formatter::dateFormat($row['author']);
                     }
-					return $row;
-				});
+                    return $row;
+                });
             });
     }
 }

@@ -22,7 +22,7 @@ class ProfileViewAction extends CrudAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-		$this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::get('Users');
         $this->Auth->allow($this->getName());
     }
 
@@ -45,7 +45,7 @@ class ProfileViewAction extends CrudAction
            ->find('apiFormat', $options)
            ->where(['Users.username' => $this->_id])
            ->firstOrFail();
-		
-		return ['profile' => $record];
+
+        return ['profile' => $record];
     }
 }

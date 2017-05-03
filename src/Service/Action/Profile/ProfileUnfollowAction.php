@@ -20,7 +20,7 @@ class ProfileUnfollowAction extends CrudAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-		$this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::get('Users');
     }
 
     /**
@@ -46,11 +46,11 @@ class ProfileUnfollowAction extends CrudAction
            ->firstOrFail();
 
         if ($record) {
-			$Follows = TableRegistry::get('Follows');
+            $Follows = TableRegistry::get('Follows');
             $current = $Follows->find()->where([
                 'follower_id' => $this->Auth->user('id'),
                 'followable_id' => $record['id'],
-			])->first();
+            ])->first();
             if ($current) {
                 $Follows->delete($current);
             }

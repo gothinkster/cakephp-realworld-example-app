@@ -110,12 +110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/cakephp-api.git",
-                "reference": "45057a2e6a7c467e944fc832c98e79ac8dd0f5a9"
+                "reference": "3ee9b8af89797295b71699f752382d53ba492529"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/45057a2e6a7c467e944fc832c98e79ac8dd0f5a9",
-                "reference": "45057a2e6a7c467e944fc832c98e79ac8dd0f5a9",
+                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/3ee9b8af89797295b71699f752382d53ba492529",
+                "reference": "3ee9b8af89797295b71699f752382d53ba492529",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "hateaos",
                 "rest"
             ],
-            "time": "2017-04-28 20:42:31"
+            "time": "2017-05-03 18:05:57"
         },
         {
             "name": "cakedc/users",
@@ -296,16 +296,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.4.5",
+            "version": "3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "0555acc77fc9f564ddab9a9879ed1db24fa7b389"
+                "reference": "e9ab076a5876e6078be8527b085ce9ec3288b8ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/0555acc77fc9f564ddab9a9879ed1db24fa7b389",
-                "reference": "0555acc77fc9f564ddab9a9879ed1db24fa7b389",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/e9ab076a5876e6078be8527b085ce9ec3288b8ca",
+                "reference": "e9ab076a5876e6078be8527b085ce9ec3288b8ca",
                 "shasum": ""
             },
             "require": {
@@ -370,7 +370,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-07 01:46:40"
+            "time": "2017-05-03 01:34:22"
         },
         {
             "name": "cakephp/chronos",

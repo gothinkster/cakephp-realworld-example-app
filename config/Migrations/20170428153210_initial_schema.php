@@ -55,6 +55,10 @@ class InitialSchema extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
+            ->addIndex(['author_id'])
+            ->addIndex(['slug'], [
+                'unique' => true,
+            ])
             ->create();
 
         $this->table('comments', ['id' => false, 'primary_key' => ['id']])
@@ -78,6 +82,7 @@ class InitialSchema extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
+            ->addIndex(['article_id'])
             ->create();
 
 
@@ -100,6 +105,8 @@ class InitialSchema extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
+            ->addIndex(['followable_id'])
+            ->addIndex(['follower_id', 'followable_id'])
             ->create();
 
         $this->table('favorites', ['id' => false, 'primary_key' => ['id']])
@@ -118,6 +125,8 @@ class InitialSchema extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
+            ->addIndex(['article_id', 'user_id'])
+            ->addIndex(['user_id'])
             ->create();
     }
 }

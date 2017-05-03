@@ -102,6 +102,12 @@ class InitialUsers extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
+            ->addIndex(['email'], [
+                'unique' => true,
+            ])
+            ->addIndex(['username'], [
+                'unique' => true,
+            ])
             ->create();
 
         $this->table('social_accounts', ['id' => false, 'primary_key' => ['id']])

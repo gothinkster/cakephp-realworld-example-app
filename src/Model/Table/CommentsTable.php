@@ -15,6 +15,7 @@ use App\Utility\Formatter;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -106,17 +107,16 @@ class CommentsTable extends Table
     public function findApiFormat(Query $query, array $options)
     {
         return $query
-            ->contain(['Authors', 'Articles'])
+            ->select(['id', 'body', 'created', 'modified', 'author_id'])
             ->order(['Comments.created' => 'desc'])
             ->formatResults(function ($results) use ($options) {
-                return $results->map(function ($row) {
+                return $results->map(function ($row) use ($options) {
                     if ($row === null) {
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-                    if ($row['author']) {
-                        $row['author'] = Formatter::dateFormat($row['author']);
-                    }
+                    $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
+                    unset($row['author_id']);
                     return $row;
                 });
             });

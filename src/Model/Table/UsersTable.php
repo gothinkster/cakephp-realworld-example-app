@@ -169,49 +169,43 @@ class UsersTable extends Table
 
         return $query
             ->select($this->getSchema()->columns())
-            ->formatResults(function ($results) {
-                return $results->map(function ($row) {
-                    return $this->rowFormatter($row);
+            ->formatResults(function ($results) use ($options) {
+                return $results->map(function ($row) use ($options) {
+                    if ($row === null) {
+                        return $row;
+                    }
+
+                    if ($row['Follows']) {
+                        $row['following'] = !empty($row['Follows']['id']);
+                    } else {
+                        $row['following'] = false;
+                    }
+
+                    if (!empty($options['includeToken'])) {
+                        return [
+                            'username' => Hash::get($row, 'username'),
+                            'email' => Hash::get($row, 'email'),
+                            'bio' => Hash::get($row, 'bio'),
+                            'image' => Hash::get($row, 'image'),
+                            'token' => $this->_getToken($row)
+
+                        ];
+                    } else {
+                        return [
+                            'username' => Hash::get($row, 'username'),
+                            'bio' => Hash::get($row, 'bio'),
+                            'image' => Hash::get($row, 'image'),
+                            'following' => $row['following'],
+                        ];
+                    }
                 });
             });
     }
 
-    public function apiFormatter() {
-        return function ($results) {
-            return $results->map(function ($row) {
-                return $this->rowFormatter($row);
-            });
-        };
-    }
-
-    public function rowFormatter($row) {
-        if ($row === null) {
-            return $row;
-        }
-        $row = Formatter::dateFormat($row);
-
-        if ($row['Follows']) {
-            $row['following'] = !empty($row['Follows']['id']);
-        } else {
-            $row['following'] = false;
-        }
-
-        return [
-            'id' => Hash::get($row, 'id'),
-            'username' => Hash::get($row, 'username'),
-            'email' => Hash::get($row, 'email'),
-            'bio' => Hash::get($row, 'bio'),
-            'image' => Hash::get($row, 'image'),
-            'following' => $row['following'],
-            'createdAt' => Hash::get($row, 'createdAt'),
-            'updatedAt' => Hash::get($row, 'updatedAt'),
-        ];
-    }
-
     /**
-     * Find userby id and return it with token.
+     * Find user by id and return it with token.
      *
-     * @param string $id
+     * @param string $userId
      * @return \Cake\ORM\Query The query builder
      */
     public function loginFormat($userId)
@@ -219,10 +213,24 @@ class UsersTable extends Table
         if ($userId === null) {
             return null;
         }
-        $user = $this->find('apiFormat')->where(['id' => $userId])->first();
-        $user['token'] = $this->_getToken($user);
 
-        return $user;
+        return $this->find('apiFormat', ['includeToken' => true])->where(['id' => $userId])->first();
+    }
+
+    /**
+     * Get formatted user response including following info.
+     *
+     * @param string $id
+     * @param array $options
+     * @return mixed
+     */
+    public function getFormatted($id, $options)
+    {
+        return $this->find('apiFormat', $options)
+          ->where([
+              'Users.id' => $id
+          ])
+          ->first();
     }
 
     /**

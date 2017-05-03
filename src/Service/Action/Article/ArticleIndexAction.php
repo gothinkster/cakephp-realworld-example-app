@@ -12,7 +12,6 @@
 namespace App\Service\Action\Article;
 
 use Cake\ORM\Query;
-use Cake\Utility\Hash;
 
 class ArticleIndexAction extends ArticleIndexBase
 {
@@ -33,7 +32,7 @@ class ArticleIndexAction extends ArticleIndexBase
         $options = $this->data();
         $user = $this->Auth->identify();
         if ($user) {
-            $options['user_id'] = $user['id'];
+            $options['currentUser'] = $user['id'];
         }
         return $this->getTable()->find('apiFormat', $options);
     }

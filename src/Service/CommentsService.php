@@ -32,17 +32,6 @@ class CommentsService extends FallbackService
         'delete' => '\App\Service\Action\Comment\CommentDeleteAction',
     ];
 
-
-    /**
-     * @inheritdoc
-     * @return void
-     */
-    // public function initialize()
-    // {
-        // parent::initialize();
-        // $this->mapAction('feed', CommentIndexAction::class, ['method' => ['GET'], 'mapCors' => true]);
-    // }
-
     /**
      * Initialize service level routes
      *
@@ -51,7 +40,6 @@ class CommentsService extends FallbackService
     public function loadRoutes()
     {
         $defaultOptions = $this->routerDefaultOptions();
-        // $defaultOptions['id'] = '[a-z0-9_-]+';
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
             $routes->extensions($this->_routeExtensions);
             $options = $defaultOptions;

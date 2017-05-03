@@ -18,6 +18,7 @@ use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -122,21 +123,6 @@ class ArticlesTable extends Table
     }
 
     /**
-     * beforeSave, starts a time before a save is initiated.
-     *
-     * @param \Cake\Event\Event $event The afterSave event that was fired.
-     * @param \Cake\ORM\Entity $entity The entity that was saved.
-     * @param \ArrayObject $options Options.
-     * @return void
-     */
-    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
-    {
-        if ($entity['tagList']) {
-
-        }
-    }
-
-    /**
      * Api finder and endpoint formatter.
      * Method additionally apply search filters to query.
      *
@@ -171,13 +157,13 @@ class ArticlesTable extends Table
                 ->where(['Tags.label' => $options['tag']])
                 ->select('Tags.label');
         }
-        if (!empty($options['user_id'])) {
+        if (!empty($options['currentUser'])) {
             $query
                 ->leftJoin(['Favorites' => 'favorites'], [
                     'Articles.id = Favorites.article_id',
                     [
                         'OR' => [
-                            ['Favorites.user_id' => $options['user_id']],
+                            ['Favorites.user_id' => $options['currentUser']],
                             ['Favorites.user_id IS' => null],
                         ]
                     ]
@@ -191,19 +177,16 @@ class ArticlesTable extends Table
         }
 
         return $query
-            ->contain(['Authors', 'Tags'])
-            ->select($this->getSchema()->columns())
-            ->select(collection($this->Authors->getSchema()->columns())->map(function ($i) {return "Authors.$i";})->toArray())
+            ->contain(['Tags'])
+            ->select(['title', 'slug', 'description', 'body', 'created', 'modified', 'author_id', 'favorites_count'])
             ->order(['Articles.created' => 'desc'])
             ->formatResults(function ($results) use ($options) {
-                return $results->map(function ($row) {
+                return $results->map(function ($row) use ($options) {
                     if ($row === null) {
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-                    if ($row['author']) {
-                        $row['author'] = $this->Authors->rowFormatter($row['author']);
-                    }
+                    $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
                     if ($row['tags']) {
                         $tags = collection($row['tags'])
                             ->map(function ($tag) {
@@ -221,6 +204,9 @@ class ArticlesTable extends Table
                         $row['favorited'] = 0;
                     }
                     $row['favoritesCount'] = $row['favorites_count'];
+                    unset($row['author_id']);
+                    unset($row['favorites_count']);
+                    unset($row['Favorites']);
 
                     return $row;
                 });

@@ -25,7 +25,8 @@ class ArticleFeedAction extends ArticleIndexBase
     {
         $user = $this->Auth->identify();
         return $this->getTable()->find('apiFormat', [
-            'feed_by' => $this->Auth->user('id')
+            'feed_by' => $this->Auth->user('id'),
+            'currentUser' => $this->Auth->user('id'),
         ]);
     }
 }

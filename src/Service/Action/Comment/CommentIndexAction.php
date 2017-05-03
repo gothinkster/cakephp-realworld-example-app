@@ -21,6 +21,12 @@ class CommentIndexAction extends ChildArticleAction
         'AppPaginate'
     ];
 
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+        $this->Auth->allow($this->getName());
+    }
+
     /**
      * Execute action.
      *
@@ -36,4 +42,29 @@ class CommentIndexAction extends ChildArticleAction
             'commentsCount' => Hash::get($pagination, 'count'),
         ];
     }
+
+    /**
+     * Builds entities list
+     *
+     * @return \Cake\Collection\Collection
+     */
+    protected function _getEntities()
+    {
+        $options = $this->data();
+        $user = $this->Auth->identify();
+        if ($user) {
+            $options['currentUser'] = $user['id'];
+        }
+        $query = $this->getTable()->find('apiFormat', $options);
+
+        $event = $this->dispatchEvent('Action.Crud.onFindEntities', compact('query'));
+        if ($event->result) {
+            $query = $event->result;
+        }
+        $records = $query->all();
+        $this->dispatchEvent('Action.Crud.afterFindEntities', compact('query', 'records'));
+
+        return $records;
+    }
+
 }

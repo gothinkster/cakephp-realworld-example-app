@@ -42,4 +42,32 @@ class AppJsonRenderer extends JsonRenderer
 
         return true;
     }
+
+    /**
+     * Processes an exception thrown while processing the request.
+     *
+     * @param Exception $exception The exception object.
+     * @return void
+     */
+    public function error(Exception $exception)
+    {
+        $response = $this->_service->getResponse();
+        $data = [
+            'error' => [
+                'code' => $exception->getCode(),
+                'message' => $this->_buildMessage($exception)
+            ]
+        ];
+        if ($exception instanceof ValidationException) {
+            $data['error'] = [];
+            foreach ($exception->getValidationErrors() as $field => $errors) {
+                if (is_array($errors)) {
+                    $data['error'][$field] = join("\n", array_values($errors));
+                } else {
+                    $data['error'][$field] = $errors;
+                }
+            }
+        }
+        $this->_service->setResponse($response->withStringBody($this->_encode($data))->withType('application/json'));
+    }
 }

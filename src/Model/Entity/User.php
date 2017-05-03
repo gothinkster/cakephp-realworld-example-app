@@ -11,6 +11,7 @@
 
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -63,4 +64,43 @@ class User extends Entity
         'password',
         'token'
     ];
+
+    /**
+     * @param string $password password that will be set.
+     * @return bool|string
+     */
+    protected function _setPassword($password)
+    {
+        return $this->hashPassword($password);
+    }
+
+    /**
+     * Hash a password using the configured password hasher,
+     * use DefaultPasswordHasher if no one was configured
+     *
+     * @param string $password password to be hashed
+     * @return mixed
+     */
+    public function hashPassword($password)
+    {
+        $PasswordHasher = $this->getPasswordHasher();
+
+        return $PasswordHasher->hash($password);
+    }
+
+    /**
+     * Return the configured Password Hasher
+     *
+     * @return mixed
+     */
+    public function getPasswordHasher()
+    {
+        $passwordHasher = Configure::read('Users.passwordHasher');
+        if (!class_exists($passwordHasher)) {
+            $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
+        }
+
+        return new $passwordHasher;
+    }
+
 }

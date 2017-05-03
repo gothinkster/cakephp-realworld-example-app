@@ -59,7 +59,6 @@ class Application extends BaseApplication
                 'username' => 'email',
                 'password' => 'password'
             ],
-            'passwordHasher' => PlainPasswordHasher::class
         ]);
 
         // Add it to the authentication middleware

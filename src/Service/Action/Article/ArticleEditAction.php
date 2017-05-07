@@ -28,10 +28,9 @@ class ArticleEditAction extends ArticleViewAction
         if (!array_key_exists('article', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['article root does not exists']);
         }
-        $entity = $this->getTable()->find()->where(['Articles.slug' => $this->_id])->firstOrFail();
         $data = Hash::get($data, 'article');
         unset($data['author']);
-        $entity = $this->_patchEntity($entity, $data);
+        $entity = $this->_patchEntity($this->_getEntityBySlug(), $data);
         $errors = $entity->errors();
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);
@@ -49,7 +48,7 @@ class ArticleEditAction extends ArticleViewAction
     {
         $data = Hash::get($this->data(), 'article');
         unset($data['author']);
-        $entity = $this->_patchEntity($this->_getEntity($this->_id), $data);
+        $entity = $this->_patchEntity($this->_getEntityBySlug(), $data);
 
         if ($this->_save($entity)) {
             return ['article' => $this->_getEntity($this->_id)];
@@ -63,5 +62,13 @@ class ArticleEditAction extends ArticleViewAction
           ->find('apiFormat')
           ->where(['Articles.slug' => $id])
           ->firstOrFail();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function _getEntityBySlug()
+    {
+        return $this->getTable()->find()->where(['Articles.slug' => $this->_id])->firstOrFail();
     }
 }

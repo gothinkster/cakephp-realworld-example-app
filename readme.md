@@ -24,9 +24,9 @@ Install all the dependencies using composer
 
     composer install
 
-Copy the example app config file and make the required configuration changes in the config/app.php file
+Configure your database settings in the `config/app.php` file(See: Datasource/default)
 
-    cp config/app.php.default config/app.php
+    vi config/app.php
 
 Run the database migrations (**Set the database connection in app.php**)
 

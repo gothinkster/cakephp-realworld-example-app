@@ -19,11 +19,15 @@ class ProfileViewAction extends CrudAction
 
     public $extensions = [];
 
+    public $isPublic = true;
+
     public function initialize(array $config)
     {
         parent::initialize($config);
         $this->_table = TableRegistry::get('Users');
-        $this->Auth->allow($this->getName());
+        if ($this->isPublic) {
+            $this->Auth->allow($this->getName());
+        }
     }
 
     /**
@@ -32,6 +36,16 @@ class ProfileViewAction extends CrudAction
      * @return mixed
      */
     public function execute()
+    {
+        return $this->_viewProfile();
+    }
+
+    /**
+     * Builds profile view data.
+     *
+     * @return array
+     */
+    protected function _viewProfile()
     {
         $user = $this->Auth->identify();
         if ($user) {

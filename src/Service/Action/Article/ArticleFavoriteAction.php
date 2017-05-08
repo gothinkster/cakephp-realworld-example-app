@@ -11,11 +11,10 @@
 
 namespace App\Service\Action\Article;
 
-use Cake\ORM\TableRegistry;
-use CakeDC\Api\Service\Action\CrudAction;
-
-class ArticleFavoriteAction extends CrudAction
+class ArticleFavoriteAction extends ArticleViewAction
 {
+
+    public $isPublic = false;
 
     /**
      * Apply validation process.
@@ -35,23 +34,9 @@ class ArticleFavoriteAction extends CrudAction
     public function execute()
     {
         $article = $this->_getEntity($this->_id);
+        $this->getTable()->favorite($article['id'], $this->Auth->user('id'));
 
-        if ($article) {
-            $current = $this->getTable()->Favorites->find()
-               ->where([
-                   'user_id' => $this->Auth->user('id'),
-                   'article_id' => $article['id'],
-               ])
-               ->first();
-            if (!$current) {
-                $entity = $this->getTable()->Favorites->newEntity([
-                    'user_id' => $this->Auth->user('id'),
-                    'article_id' => $article['id'],
-                ]);
-                $result = $this->getTable()->Favorites->save($entity);
-            }
-        }
-        return !empty($result);
+        return $this->_viewArticle();
     }
 
     protected function _buildViewCondition($id) {

@@ -59,15 +59,20 @@ class AppJsonRenderer extends JsonRenderer
             ]
         ];
         if ($exception instanceof ValidationException) {
-            $data['error'] = [];
+            $data['errors'] = [];
+            unset($data['error']);
             foreach ($exception->getValidationErrors() as $field => $errors) {
                 if (is_array($errors)) {
-                    $data['error'][$field] = join("\n", array_values($errors));
+                    $data['errors'][$field] = array_values($errors);
                 } else {
-                    $data['error'][$field] = $errors;
+                    $data['errors'][$field] = [$errors];
                 }
             }
         }
-        $this->_service->setResponse($response->withStringBody($this->_encode($data))->withType('application/json'));
+        $this->_service->setResponse($response
+            ->withStringBody($this->_encode($data))
+            ->withType('application/json')
+            ->withStatus($exception->getCode())
+        );
     }
 }

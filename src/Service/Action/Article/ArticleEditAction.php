@@ -11,11 +11,14 @@
 
 namespace App\Service\Action\Article;
 
+use Cake\Network\Exception\ForbiddenException;
 use Cake\Utility\Hash;
 use CakeDC\Api\Exception\ValidationException;
 
 class ArticleEditAction extends ArticleViewAction
 {
+
+    public $isPublic = false;
 
     /**
      * Apply validation process.
@@ -31,6 +34,11 @@ class ArticleEditAction extends ArticleViewAction
         $data = Hash::get($data, 'article');
         unset($data['author']);
         $entity = $this->_patchEntity($this->_getEntityBySlug(), $data);
+
+        if ($entity['author_id'] != $this->Auth->user('id')) {
+            throw new ForbiddenException();
+        }
+
         $errors = $entity->errors();
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);

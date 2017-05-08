@@ -71,15 +71,13 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('username', 'create')
-            ->notEmpty('username');
-
-        $validator
-            ->email('email')
-            ->allowEmpty('email');
+            ->requirePresence('email', 'create')
+            ->email('email', false, 'This field must be a valid email address.')
+            ->notEmpty('email');
 
         $validator
             ->requirePresence('password', 'create')
+            ->minLength('password', 6, 'Password must be at least 6 characters.')
             ->notEmpty('password');
 
         $validator
@@ -107,6 +105,33 @@ class UsersTable extends Table
             ->allowEmpty('tos_date');
 
         $validator
+            ->allowEmpty('role');
+
+        $validator
+            ->allowEmpty('secret');
+
+        $validator
+            ->url('image', __('Invalid url'))
+            ->allowEmpty('image');
+
+        $validator
+            ->boolean('secret_verified')
+            ->allowEmpty('secret_verified');
+
+        return $validator;
+    }
+
+    /**
+     * Wrapper for all validation rules for register
+     * @param Validator $validator Cake validator object.
+     *
+     * @return Validator
+     */
+    public function validationRegister(Validator $validator)
+    {
+        $validator = $this->validationDefault($validator);
+
+        $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
             ->notEmpty('active');
@@ -117,14 +142,9 @@ class UsersTable extends Table
             ->notEmpty('is_superuser');
 
         $validator
-            ->allowEmpty('role');
-
-        $validator
-            ->allowEmpty('secret');
-
-        $validator
-            ->boolean('secret_verified')
-            ->allowEmpty('secret_verified');
+            ->requirePresence('username')
+            ->alphaNumeric('username', 'Username may only contain letters and numbers.')
+            ->notEmpty('username');
 
         return $validator;
     }
@@ -138,8 +158,8 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['username']));
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['username'], __('Username has already been taken.')));
+        $rules->add($rules->isUnique(['email'], __('Email has already been taken.')));
 
         return $rules;
     }
@@ -187,7 +207,7 @@ class UsersTable extends Table
                             'email' => Hash::get($row, 'email'),
                             'bio' => Hash::get($row, 'bio'),
                             'image' => Hash::get($row, 'image'),
-                            'token' => $this->_getToken($row)
+                            'token' => Hash::get($row, 'token')
 
                         ];
                     } else {
@@ -233,18 +253,4 @@ class UsersTable extends Table
           ->first();
     }
 
-    /**
-     * Builds jwt token.
-     *
-     * @param EntityInterface $user User entity .
-     * @return string
-     */
-    protected function _getToken($user)
-    {
-        $content = [
-            'id' => $user['id'],
-            'exp' => time() + 60 * DAY
-        ];
-        return JWT::encode($content, Security::salt());
-    }
 }

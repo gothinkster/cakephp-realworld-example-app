@@ -11,8 +11,26 @@
 
 namespace App\Service\Action\Article;
 
+use Cake\Network\Exception\ForbiddenException;
+
 class ArticleDeleteAction extends ArticleViewAction
 {
+
+    public $isPublic = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function validates()
+    {
+        $record = $this->_getEntity($this->_id);
+
+        if ($record['author_id'] != $this->Auth->user('id')) {
+            throw new ForbiddenException();
+        }
+
+        return true;
+    }
 
     /**
      * Execute action.

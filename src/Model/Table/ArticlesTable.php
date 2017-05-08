@@ -212,4 +212,52 @@ class ArticlesTable extends Table
                 });
             });
     }
+
+    /**
+     * Favorite article by user.
+     *
+     * @param string $id An article id.
+     * @param string $userId A user id
+     * @return bool|EntityInterface
+     */
+    public function favorite($id, $userId)
+    {
+        $exists = $this->Favorites->find()
+           ->where([
+               'user_id' => $userId,
+               'article_id' => $id,
+           ])
+           ->first();
+        if (!$exists) {
+            $entity = $this->Favorites->newEntity([
+                'user_id' => $userId,
+                'article_id' => $id,
+            ]);
+            return $this->Favorites->save($entity);
+        }
+
+        return $exists;
+    }
+
+    /**
+     * Favorite article by user.
+     *
+     * @param string $id An article id.
+     * @param string $userId A user id
+     * @return bool|EntityInterface
+     */
+    public function unfavorite($id, $userId)
+    {
+        $entity = $this->Favorites->find()
+           ->where([
+               'user_id' => $userId,
+               'article_id' => $id,
+           ])
+           ->first();
+        if ($entity) {
+            return $this->Favorites->delete($entity);
+        }
+
+        return true;
+    }
 }

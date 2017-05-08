@@ -12,9 +12,24 @@
 namespace App\Service\Action\Comment;
 
 use App\Service\Action\ChildArticleAction;
+use Cake\Network\Exception\ForbiddenException;
 
 class CommentDeleteAction extends ChildArticleAction
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function validates()
+    {
+        $record = $this->getTable()->find()->where(['id' => $this->_id])->firstOrFail();
+
+        if ($record['author_id'] != $this->Auth->user('id')) {
+            throw new ForbiddenException();
+        }
+
+        return true;
+    }
 
     /**
      * Execute action.

@@ -55,6 +55,17 @@ class LoginAction extends Action
      */
     public function validates()
     {
+        $validator = TableRegistry::get('Users')->validator();
+        $data = $this->data();
+        if (!array_key_exists('user', $data)) {
+            throw new ValidationException(__('Validation failed'), 0, null, ['user root does not exists']);
+        }
+        $data = Hash::get($this->data(), 'user');
+        $errors = $validator->errors($data);
+        if (!empty($errors)) {
+            throw new ValidationException(__('Validation failed'), 0, null, $errors);
+        }
+
         return true;
     }
 

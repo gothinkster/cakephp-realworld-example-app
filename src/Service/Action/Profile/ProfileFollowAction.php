@@ -14,8 +14,10 @@ namespace App\Service\Action\Profile;
 use Cake\ORM\TableRegistry;
 use CakeDC\Api\Service\Action\CrudAction;
 
-class ProfileFollowAction extends CrudAction
+class ProfileFollowAction extends ProfileViewAction
 {
+
+    public $isPublic = false;
 
     public function initialize(array $config)
     {
@@ -41,28 +43,11 @@ class ProfileFollowAction extends CrudAction
     public function execute()
     {
         $record = $this->getTable()
-               ->find('apiFormat')
+               ->find()
                ->where(['Users.username' => $this->_id])
                ->firstOrFail();
+        TableRegistry::get('Follows')->follow($this->Auth->user('id'), $record['id']);
 
-        if ($record) {
-            $Follows = TableRegistry::get('Follows');
-            $current = $Follows->find()
-               ->where([
-                   'follower_id' => $this->Auth->user('id'),
-                   'followable_id' => $record['id'],
-                   'blocked' => false,
-               ])
-               ->first();
-            if (!$current) {
-                $entity = $Follows->newEntity([
-                    'follower_id' => $this->Auth->user('id'),
-                    'followable_id' => $record['id'],
-                    'blocked' => false,
-                ]);
-                $result = $Follows->save($entity);
-            }
-        }
-        return !empty($result);
+        return $this->_viewProfile();
     }
 }

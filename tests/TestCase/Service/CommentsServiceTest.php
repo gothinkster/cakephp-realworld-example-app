@@ -1,0 +1,129 @@
+<?php
+
+namespace App\Test\TestCase\Service;
+
+use App\Test\FixturesTrait;
+use App\Test\TestCase\IntegrationTestCase;
+use Cake\ORM\TableRegistry;
+use CakephpFactoryMuffin\FactoryLoader;
+
+class CommentsServiceTest extends IntegrationTestCase
+{
+    use FixturesTrait;
+
+    protected $article;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
+    }
+
+    public function testSuccessAddComment()
+    {
+        $data = [
+            'comment' => [
+                'body' => 'This is a comment'
+            ]
+        ];
+
+        $this->sendRequest("/articles/{$this->article->slug}/comments", 'POST', ($data));
+        $this->assertStatus(200);
+
+        $this->assertArraySubset([
+            'comment' => [
+                'body' => 'This is a comment',
+                'author' => [
+                    'username' => $this->loggedInUser->username
+                ],
+            ]
+        ], $this->responseJson());
+    }
+
+    public function testRemoveExistsComment()
+    {
+        $comment = $this->_generateComment($this->loggedInUser->id);
+        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->assertStatus(200);
+
+        $this->assertEquals(0, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
+    }
+
+    public function testReturnAllArticleComments()
+    {
+        $comments = FactoryLoader::seed(2, 'Comments', [
+            'author_id' => $this->user->id,
+            'article_id' => $this->article->id,
+        ]);
+        $this->sendRequest("/articles/{$this->article->slug}/comments", 'GET', []);
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+
+        $this->assertArraySubset([
+            'comments' => [
+                [
+                    'id' => $comments[0]['id'],
+                    'body' => $comments[0]['body'],
+                    'author' => [
+                        'username' => $this->user->username
+                    ],
+                ],
+                [
+                    'id' => $comments[1]['id'],
+                    'body' => $comments[1]['body'],
+                    'author' => [
+                        'username' => $this->user->username
+                    ],
+                ],
+            ]
+        ], $response);
+    }
+
+    public function testUnauthenticatedErrorOnDeleteIfNotLoggedIn()
+    {
+        $comment = $this->_generateComment($this->user->id);
+        $this->headers = [];
+        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->assertStatus(401);
+
+        $this->assertEquals(1, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
+    }
+
+    public function testDeleteNotExistsComment()
+    {
+        $this->sendRequest("/articles/{$this->article->slug}/comments/999999", 'DELETE', []);
+        $this->assertStatus(404);
+
+        $this->sendRequest("/articles/unknown/comments/999999", 'DELETE', []);
+        $this->assertStatus(404);
+    }
+
+    public function testListCommentsForNonExistsArticle()
+    {
+        $this->sendRequest("/articles/unknown/comments", 'GET', []);
+        $this->assertStatus(404);
+    }
+
+    public function testForbiddenErrorIfDeleteOtherUserComment()
+    {
+        $comment = $this->_generateComment($this->user->id);
+        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->assertStatus(403);
+        $this->assertEquals(1, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
+    }
+
+    /**
+     * @param $userId
+     * @return \Cake\Datasource\EntityInterface
+     */
+    protected function _generateComment($userId)
+    {
+        $comment = FactoryLoader::create('Comments', [
+            'author_id' => $userId,
+            'article_id' => $this->article->id,
+        ]);
+        return $comment;
+    }
+}
+

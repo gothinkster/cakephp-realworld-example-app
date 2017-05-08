@@ -84,4 +84,72 @@ class FollowsTable extends Table
 
         return $validator;
     }
+
+    /**
+     * Checks if user following another user.
+     *
+     * @param string $followerId Follower User id.
+     * @param string $followableId Followable User id.
+     * @return bool
+     */
+    public function following($followerId, $followableId)
+    {
+        return $this->find()
+            ->where([
+                'follower_id' => $followerId,
+                'followable_id' => $followableId,
+                'blocked' => false,
+            ])
+            ->count() > 0;
+    }
+
+    /**
+     * Makes one user following another user.
+     *
+     * @param string $followerId Follower User id.
+     * @param string $followableId Followable User id.
+     * @return bool
+     */
+    public function follow($followerId, $followableId)
+    {
+        $exists = $this->find()
+           ->where([
+               'follower_id' => $followerId,
+               'followable_id' => $followableId,
+               'blocked' => false,
+           ])
+           ->first();
+        if (!$exists) {
+            return $this->save($this->newEntity([
+                'follower_id' => $followerId,
+                'followable_id' => $followableId,
+                'blocked' => false,
+            ]));
+        }
+
+        return true;
+    }
+
+    /**
+     * Makes one user not following another user.
+     *
+     * @param string $followerId Follower User id.
+     * @param string $followableId Followable User id.
+     * @return bool
+     */
+    public function unfollow($followerId, $followableId)
+    {
+        $exists = $this->find()
+           ->where([
+               'follower_id' => $followerId,
+               'followable_id' => $followableId,
+               'blocked' => false,
+           ])
+           ->first();
+        if ($exists) {
+            return $this->delete($exists);
+        }
+
+        return true;
+    }
 }

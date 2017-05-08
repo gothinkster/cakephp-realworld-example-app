@@ -18,10 +18,14 @@ class ArticleViewAction extends CrudAction
 
     public $extensions = [];
 
+    public $isPublic = true;
+
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->Auth->allow($this->getName());
+        if ($this->isPublic) {
+            $this->Auth->allow($this->getName());
+        }
     }
 
     /**
@@ -31,9 +35,19 @@ class ArticleViewAction extends CrudAction
      */
     public function execute()
     {
+        return $this->_viewArticle();
+    }
+
+    /**
+     * Returns current article.
+     *
+     * @return array
+     */
+    public function _viewArticle()
+    {
         $record = $this->getTable()
               ->find('apiFormat', [
-                  'user_id' => $this->Auth->user('id')
+                  'currentUser' => $this->Auth->user('id')
               ])
               ->where(['Articles.slug' => $this->_id])
               ->firstOrFail();

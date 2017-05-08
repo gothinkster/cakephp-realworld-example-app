@@ -41,7 +41,7 @@ class UserEditAction extends CrudAction
         $userId = $this->Auth->user('id');
         $entity = $this->_getEntity($userId);
         $data = Hash::get($this->data(), 'user');
-        $entity = $this->_patchEntity($entity, $data);
+        $entity = $this->_patchEntity($entity, $data, ['validate' => 'register']);
         $errors = $entity->errors();
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);

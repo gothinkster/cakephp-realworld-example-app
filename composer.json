@@ -11,15 +11,17 @@
         "cakephp/migrations": "~1.0",
         "cakedc/cakephp-api": "3.4.x-dev",
         "cakedc/users": "*",
-        "muffin/tags": "dev-master",
         "cakephp/authentication": "*",
         "firebase/php-jwt": "~4.0",
         "muffin/slug": "1.*",
+        "muffin/tags": "dev-master",
+		"skie/cakephp-factory-muffin": "*",
         "cakephp/plugin-installer": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.2",
+        "phpunit/phpunit": "6.*",
         "cakephp/bake": "~1.1"
     },
     "suggest": {

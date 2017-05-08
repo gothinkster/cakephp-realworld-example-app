@@ -13,7 +13,7 @@ namespace App\Model\Table;
 
 use App\Utility\Formatter;
 use Cake\ORM\Query;
-use Cake\ORM\Table;
+use Muffin\Tags\Model\Table\TagsTable as Table;
 use Cake\Validation\Validator;
 
 /**
@@ -45,10 +45,10 @@ class TagsTable extends Table
         parent::initialize($config);
 
         $this->setTable('tags_tags');
-        $this->setDisplayField('id');
+//        $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
+//        $this->addBehavior('Timestamp');
     }
 
     /**

@@ -35,7 +35,7 @@ class RegisterAction extends CrudAction
      */
     public function validates()
     {
-        $validator = $this->getTable()->validator();
+        $validator = $this->getTable()->validator('register');
         $data = $this->data();
         if (!array_key_exists('user', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['user root does not exists']);
@@ -58,7 +58,9 @@ class RegisterAction extends CrudAction
     {
         $entity = $this->_newEntity();
         $data = Hash::get($this->data(), 'user');
-        $entity = $this->_patchEntity($entity, $data);
+        $entity = $this->_patchEntity($entity, $data, [
+            'validate' => 'register'
+        ]);
 
         $record = $this->_save($entity);
         if ($record) {

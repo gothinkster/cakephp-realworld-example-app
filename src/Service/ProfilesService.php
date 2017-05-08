@@ -49,7 +49,7 @@ class ProfilesService extends FallbackService
     public function loadRoutes()
     {
         $defaultOptions = $this->routerDefaultOptions();
-        $defaultOptions['id'] = '[a-z0-9_-]+';
+        $defaultOptions['id'] = '[A-Za-z0-9_-]+';
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
             $routes->extensions($this->_routeExtensions);
             $routes->resources($this->getName(), $defaultOptions);

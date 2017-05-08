@@ -14,8 +14,10 @@ namespace App\Service\Action\Profile;
 use Cake\ORM\TableRegistry;
 use CakeDC\Api\Service\Action\CrudAction;
 
-class ProfileUnfollowAction extends CrudAction
+class ProfileUnfollowAction extends ProfileViewAction
 {
+
+    public $isPublic = false;
 
     public function initialize(array $config)
     {
@@ -41,7 +43,7 @@ class ProfileUnfollowAction extends CrudAction
     public function execute()
     {
         $record = $this->getTable()
-           ->find('apiFormat')
+           ->find()
            ->where(['Users.username' => $this->_id])
            ->firstOrFail();
 
@@ -55,6 +57,8 @@ class ProfileUnfollowAction extends CrudAction
                 $Follows->delete($current);
             }
         }
-        return true;
+        TableRegistry::get('Follows')->unfollow($this->Auth->user('id'), $record['id']);
+
+        return $this->_viewProfile();
     }
 }

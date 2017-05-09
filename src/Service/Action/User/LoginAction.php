@@ -13,14 +13,13 @@
 
 namespace App\Service\Action\User;
 
-use Cake\ORM\TableRegistry;
 use CakeDC\Api\Exception\ValidationException;
 use CakeDC\Api\Service\Action\Action;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Exception\UserNotFoundException;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
-use Cake\Validation\Validator;
 
 /**
  * Class LoginAction
@@ -87,5 +86,4 @@ class LoginAction extends Action
 
         return ['user' => $user];
     }
-
 }

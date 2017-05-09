@@ -11,14 +11,11 @@
 
 namespace App\Model\Table;
 
-use App\Utility\Formatter;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
-use Cake\Utility\Security;
 use Cake\Validation\Validator;
-use Firebase\JWT\JWT;
 
 /**
  * Users Model
@@ -167,8 +164,8 @@ class UsersTable extends Table
     /**
      * Api finder and endpoint formatter.
      *
-     * @param \Cake\ORM\Query  $query
-     * @param array $options
+     * @param \Cake\ORM\Query $query Query object.
+     * @param array $options Query options.
      * @return \Cake\ORM\Query The query builder.
      */
     public function findApiFormat(Query $query, array $options)
@@ -225,7 +222,7 @@ class UsersTable extends Table
     /**
      * Find user by id and return it with token.
      *
-     * @param string $userId
+     * @param string $userId User id.
      * @return \Cake\ORM\Query The query builder
      */
     public function loginFormat($userId)
@@ -240,8 +237,8 @@ class UsersTable extends Table
     /**
      * Get formatted user response including following info.
      *
-     * @param string $id
-     * @param array $options
+     * @param string $id User id.
+     * @param array $options Query options.
      * @return mixed
      */
     public function getFormatted($id, $options)
@@ -252,5 +249,4 @@ class UsersTable extends Table
           ])
           ->first();
     }
-
 }

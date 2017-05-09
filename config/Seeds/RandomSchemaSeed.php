@@ -85,7 +85,7 @@ class RandomSchemaSeed extends AbstractSeed
             return rand(1, $this->totalUsers) < $this->userWithArticleRatio * $this->totalUsers;
         })->each(function ($user) {
             $articles = FactoryLoader::seed(rand(1, $this->maxArticlesByUser), 'Articles', ['author_id' => $user->id]);
-            collection($articles)->each(function($article) {
+            collection($articles)->each(function ($article) {
                 $comments = FactoryLoader::seed(rand(1, $this->maxCommentsInArticle), 'Comments', [
                     'article_id' => $article->id,
                 ]);
@@ -96,7 +96,7 @@ class RandomSchemaSeed extends AbstractSeed
 
         $favoritesCount = count($users) * $this->usersWithFavoritesRatio;
         $Favorites = \Cake\ORM\TableRegistry::get('Favorites');
-        for($i = 1; $i < $favoritesCount; $i++) {
+        for ($i = 1; $i < $favoritesCount; $i++) {
             $user = $users[$i];
             $articles->shuffle()->take(rand(1, floor($articles->count() / 2)))->each(
                 function ($article) use ($Favorites, $user) {
@@ -110,7 +110,7 @@ class RandomSchemaSeed extends AbstractSeed
 
         $followingCount = count($users) * $this->usersWithFollowingRatio;
         $Follows = \Cake\ORM\TableRegistry::get('Follows');
-        for($i = 1; $i < $followingCount; $i++) {
+        for ($i = 1; $i < $followingCount; $i++) {
             $user = $users[$i];
             collection($users)
                 ->reject(function ($item) use ($user) {

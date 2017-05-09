@@ -126,8 +126,8 @@ class ArticlesTable extends Table
      * Api finder and endpoint formatter.
      * Method additionally apply search filters to query.
      *
-     * @param \Cake\ORM\Query  $query
-     * @param array $options
+     * @param \Cake\ORM\Query $query Query object.
+     * @param array $options Query options.
      * @return \Cake\ORM\Query The query builder.
      */
     public function findApiFormat(Query $query, array $options)
@@ -233,6 +233,7 @@ class ArticlesTable extends Table
                 'user_id' => $userId,
                 'article_id' => $id,
             ]);
+
             return $this->Favorites->save($entity);
         }
 

@@ -38,8 +38,4 @@ class ArticleUnfavoriteAction extends ArticleViewAction
 
         return $this->_viewArticle();
     }
-
-    protected function _buildViewCondition($id) {
-        return ['Articles.slug' => $this->_id];
-    }
 }

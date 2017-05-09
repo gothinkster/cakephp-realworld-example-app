@@ -11,9 +11,19 @@
 
 namespace App\Utility;
 
-class Formatter {
+use Cake\Datasource\EntityInterface;
 
-    public static function dateFormat($row) {
+class Formatter
+{
+
+    /**
+     * Formats dates in entity response.
+     *
+     * @param EntityInterface|array $row Entity record.
+     * @return EntityInterface|array
+     */
+    public static function dateFormat($row)
+    {
         if (isset($row['created']) && $row['created'] instanceof \DateTimeInterface) {
             $row['createdAt'] = $row['created']->format('Y-m-d\TH:i:s.000\Z');
             unset($row['created']);
@@ -25,5 +35,4 @@ class Formatter {
 
         return $row;
     }
-
 }

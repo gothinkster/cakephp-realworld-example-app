@@ -11,9 +11,9 @@
 
 namespace App\Service\Action\Article;
 
+use CakeDC\Api\Exception\ValidationException;
 use Cake\Network\Exception\ForbiddenException;
 use Cake\Utility\Hash;
-use CakeDC\Api\Exception\ValidationException;
 
 class ArticleEditAction extends ArticleViewAction
 {
@@ -61,14 +61,21 @@ class ArticleEditAction extends ArticleViewAction
         if ($this->_save($entity)) {
             return ['article' => $this->_getEntity($this->_id)];
         }
+
         return false;
     }
 
-    protected function _getEntity($id)
+    /**
+     * Returns single entity by id.
+     *
+     * @param mixed $primaryKey Primary key.
+     * @return \Cake\Collection\Collection
+     */
+    protected function _getEntity($primaryKey)
     {
         return $this->getTable()
           ->find('apiFormat')
-          ->where(['Articles.slug' => $id])
+          ->where(['Articles.slug' => $primaryKey])
           ->firstOrFail();
     }
 

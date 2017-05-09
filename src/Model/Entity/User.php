@@ -110,6 +110,7 @@ class User extends Entity
      *
      * @return string
      */
+// @codingStandardsIgnoreStart
     public function _getToken()
     {
         $content = [
@@ -118,5 +119,5 @@ class User extends Entity
         ];
         return JWT::encode($content, Security::salt());
     }
-
+// @codingStandardsIgnoreEnd
 }

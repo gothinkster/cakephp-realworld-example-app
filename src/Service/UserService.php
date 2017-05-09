@@ -24,11 +24,12 @@ class UserService extends FallbackService
      * @var array
      */
     protected $_actionsClassMap = [
-        'index' => UserViewAction::class,
+        'index' => UserViewAction::class
     ];
 
     /**
-     * @inheritdoc
+     * Initialize method
+     *
      * @return void
      */
     public function initialize()

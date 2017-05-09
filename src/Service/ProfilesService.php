@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright 2017, Cake Development Corporation (http://cakedc.com)
  *
@@ -17,7 +17,7 @@ use CakeDC\Api\Routing\ApiRouter;
 use CakeDC\Api\Service\FallbackService;
 use Cake\Routing\RouteBuilder;
 
-class ProfilesService extends FallbackService 
+class ProfilesService extends FallbackService
 {
 
     /**
@@ -29,9 +29,9 @@ class ProfilesService extends FallbackService
         'view' => '\App\Service\Action\Profile\ProfileViewAction',
     ];
 
-
     /**
-     * @inheritdoc
+     * Initialize method
+     *
      * @return void
      */
     public function initialize()

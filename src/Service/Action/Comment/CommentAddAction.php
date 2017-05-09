@@ -12,10 +12,8 @@
 namespace App\Service\Action\Comment;
 
 use App\Service\Action\ChildArticleAction;
-use App\Utility\Formatter;
-use Cake\Utility\Hash;
 use CakeDC\Api\Exception\ValidationException;
-use CakeDC\Api\Service\Action\CrudAction;
+use Cake\Utility\Hash;
 
 class CommentAddAction extends ChildArticleAction
 {
@@ -56,6 +54,7 @@ class CommentAddAction extends ChildArticleAction
         $result = $this->_save($entity);
         if ($result) {
             $comment = $this->getTable()->find('apiFormat')->where(['Comments.id' => $result->id])->first();
+
             return ['comment' => $comment];
         }
 

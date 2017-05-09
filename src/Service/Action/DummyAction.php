@@ -11,8 +11,6 @@
 
 namespace App\Service\Action;
 
-use Cake\Utility\Hash;
-use CakeDC\Api\Exception\ValidationException;
 use CakeDC\Api\Service\Action\Action;
 
 class DummyAction extends Action

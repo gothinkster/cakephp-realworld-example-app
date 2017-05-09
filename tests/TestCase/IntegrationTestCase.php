@@ -13,6 +13,9 @@ abstract class IntegrationTestCase extends BaseTestCase
 
     protected $headers;
 
+    /**
+     * @inheritdoc
+     */
     public function setUp()
     {
         parent::setUp();
@@ -30,15 +33,20 @@ abstract class IntegrationTestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function sendRequest($url, $method, $data = [], $userId = null)
     {
         $this->configRequest(['headers' => $this->headers]);
         parent::sendRequest($url, $method, $data);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function tearDown()
     {
         FactoryLoader::flush();
-
     }
 }

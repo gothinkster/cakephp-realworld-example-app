@@ -11,13 +11,17 @@
 
 namespace App\Service\Action\Article;
 
-use Cake\ORM\Query;
 use CakeDC\Api\Service\Action\CrudAction;
 use Cake\Utility\Hash;
 
 class ArticleIndexBase extends CrudAction
 {
 
+    /**
+     * Extensions.
+     *
+     * @var array
+     */
     public $extensions = [
         'AppPaginate'
     ];
@@ -30,8 +34,8 @@ class ArticleIndexBase extends CrudAction
     public function execute()
     {
         $entities = $this->_getEntities();
-
         $pagination = $this->service()->getResult()->payload('pagination');
+
         return [
             'articles' => $entities,
             'articlesCount' => Hash::get($pagination, 'count'),
@@ -56,5 +60,4 @@ class ArticleIndexBase extends CrudAction
 
         return $records;
     }
-
 }

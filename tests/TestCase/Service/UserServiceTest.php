@@ -33,15 +33,15 @@ class UserServiceTest extends IntegrationTestCase
 
     public function testUpdateUser()
     {
-         $data = [
-             'user' => [
-                 'username' => 'user123',
-                 'email' => 'user123@world.com',
-                 'password' => 'secretpassword',
-                 'bio' => 'hello',
-                 'image' => 'http://image.com/user.jpg',
-             ]
-         ];
+        $data = [
+            'user' => [
+                'username' => 'user123',
+                'email' => 'user123@world.com',
+                'password' => 'secretpassword',
+                'bio' => 'hello',
+                'image' => 'http://image.com/user.jpg',
+            ]
+        ];
         $this->sendRequest("/user", 'PUT', $data);
         $this->assertStatus(200);
 
@@ -68,15 +68,15 @@ class UserServiceTest extends IntegrationTestCase
 
     public function testValidationErrorsOnUpdate()
     {
-         $data = [
-             'user' => [
-                 'username' => 'invalid username',
-                 'email' => 'invalid email',
-                 'password' => '1',
-                 'bio' => 'bio data',
-                 'image' => 'invalid url',
-             ]
-         ];
+        $data = [
+            'user' => [
+                'username' => 'invalid username',
+                'email' => 'invalid email',
+                'password' => '1',
+                'bio' => 'bio data',
+                'image' => 'invalid url',
+            ]
+        ];
 
         $this->sendRequest("/user", 'PUT', $data);
         $this->assertStatus(422);

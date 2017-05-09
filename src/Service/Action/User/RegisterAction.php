@@ -13,14 +13,19 @@
 
 namespace App\Service\Action\User;
 
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 use CakeDC\Api\Exception\ValidationException;
 use CakeDC\Api\Service\Action\CrudAction;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 class RegisterAction extends CrudAction
 {
 
+    /**
+     * Action constructor.
+     *
+     * @param array $config Configuration options passed to the constructor
+     */
     public function __construct(array $config = [])
     {
         parent::__construct($config);
@@ -70,7 +75,13 @@ class RegisterAction extends CrudAction
         }
     }
 
-    public function data() {
+    /**
+     * Returns action input params
+     *
+     * @return mixed
+     */
+    public function data()
+    {
         $data = parent::data();
         $data['user']['active'] = true;
         $data['user']['is_superuser'] = false;

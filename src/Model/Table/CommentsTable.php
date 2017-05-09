@@ -100,8 +100,8 @@ class CommentsTable extends Table
     /**
      * Api finder and endpoint formatter.
      *
-     * @param \Cake\ORM\Query  $query
-     * @param array $options
+     * @param \Cake\ORM\Query $query Query object.
+     * @param array $options Query options.
      * @return \Cake\ORM\Query The query builder.
      */
     public function findApiFormat(Query $query, array $options)
@@ -117,6 +117,7 @@ class CommentsTable extends Table
                     $row = Formatter::dateFormat($row);
                     $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
                     unset($row['author_id']);
+
                     return $row;
                 });
             });

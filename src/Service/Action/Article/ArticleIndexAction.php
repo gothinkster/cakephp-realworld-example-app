@@ -16,6 +16,12 @@ use Cake\ORM\Query;
 class ArticleIndexAction extends ArticleIndexBase
 {
 
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -34,7 +40,7 @@ class ArticleIndexAction extends ArticleIndexBase
         if ($user) {
             $options['currentUser'] = $user['id'];
         }
+
         return $this->getTable()->find('apiFormat', $options);
     }
-
 }

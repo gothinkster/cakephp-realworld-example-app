@@ -18,7 +18,12 @@ class TagIndexAction extends CrudAction
 
     public $extensions = [];
 
-
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -33,7 +38,7 @@ class TagIndexAction extends CrudAction
     public function execute()
     {
         $this->_finder = 'apiFormat';
-        $entities = $this->_getEntities()->map(function($item) {
+        $entities = $this->_getEntities()->map(function ($item) {
             return $item->tag;
         })->toArray();
 

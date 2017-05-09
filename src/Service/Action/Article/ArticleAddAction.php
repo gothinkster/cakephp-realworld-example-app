@@ -11,9 +11,9 @@
 
 namespace App\Service\Action\Article;
 
-use Cake\Utility\Hash;
 use CakeDC\Api\Exception\ValidationException;
 use CakeDC\Api\Service\Action\CrudAction;
+use Cake\Utility\Hash;
 
 class ArticleAddAction extends CrudAction
 {
@@ -58,11 +58,17 @@ class ArticleAddAction extends CrudAction
         return null;
     }
 
-    protected function _getEntity($id)
+    /**
+     * Returns single entity by id.
+     *
+     * @param mixed $primaryKey Primary key.
+     * @return \Cake\Collection\Collection
+     */
+    protected function _getEntity($primaryKey)
     {
         return $this->getTable()
           ->find('apiFormat')
-          ->where(['Articles.slug' => $id])
+          ->where(['Articles.slug' => $primaryKey])
           ->firstOrFail();
     }
 }

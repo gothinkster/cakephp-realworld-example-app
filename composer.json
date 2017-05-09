@@ -15,19 +15,18 @@
         "firebase/php-jwt": "~4.0",
         "muffin/slug": "1.*",
         "muffin/tags": "dev-master",
-		"skie/cakephp-factory-muffin": "*",
+        "skie/cakephp-factory-muffin": "*",
         "cakephp/plugin-installer": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.2",
         "phpunit/phpunit": "6.*",
+        "cakephp/cakephp-codesniffer": "*",
         "cakephp/bake": "~1.1"
     },
     "suggest": {
-        "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
-        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
-        "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
+        "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification."
     },
     "autoload": {
         "psr-4": {

@@ -21,6 +21,12 @@ class CommentIndexAction extends ChildArticleAction
         'AppPaginate'
     ];
 
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -37,6 +43,7 @@ class CommentIndexAction extends ChildArticleAction
         $entities = $this->_getEntities()->toArray();
 
         $pagination = $this->service()->getResult()->payload('pagination');
+
         return [
             'comments' => $entities,
             'commentsCount' => Hash::get($pagination, 'count'),
@@ -66,5 +73,4 @@ class CommentIndexAction extends ChildArticleAction
 
         return $records;
     }
-
 }

@@ -9,30 +9,30 @@ class LoginTest extends IntegrationTestCase
 {
     use FixturesTrait;
 
-     public function testSuccessLogin()
-     {
-         $data = [
-             'user' => [
-                 'email' => $this->user->email,
-                 'password' => 'passwd',
-             ]
-         ];
+    public function testSuccessLogin()
+    {
+        $data = [
+            'user' => [
+                'email' => $this->user->email,
+                'password' => 'passwd',
+            ]
+        ];
 
-         $this->headers = [];
-         $this->sendRequest("/users/login", 'POST', $data);
-         $result = $this->responseJson();
-         $this->assertResponseOk();
-         $this->assertArraySubset([
-             'user' => [
-                 'email' => $this->user->email,
-                 'username' => $this->user->username,
-                 'bio' => $this->user->bio,
-                 'image' => $this->user->image,
-             ]
-         ], $result);
+        $this->headers = [];
+        $this->sendRequest("/users/login", 'POST', $data);
+        $result = $this->responseJson();
+        $this->assertResponseOk();
+        $this->assertArraySubset([
+            'user' => [
+                'email' => $this->user->email,
+                'username' => $this->user->username,
+                'bio' => $this->user->bio,
+                'image' => $this->user->image,
+            ]
+        ], $result);
 
-         $this->assertArrayHasKey('token', $result['user'], 'Token not found');
-     }
+        $this->assertArrayHasKey('token', $result['user'], 'Token not found');
+    }
 
     public function testNoDataReturnsValidationErrors()
     {
@@ -41,7 +41,7 @@ class LoginTest extends IntegrationTestCase
         ];
 
         $this->headers = [];
-		$this->sendRequest("/users/login", 'POST', $data);
+        $this->sendRequest("/users/login", 'POST', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [
@@ -61,7 +61,7 @@ class LoginTest extends IntegrationTestCase
         ];
 
         $this->headers = [];
-		$this->sendRequest("/users/login", 'POST', $data);
+        $this->sendRequest("/users/login", 'POST', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [

@@ -19,7 +19,9 @@ class ArticleDeleteAction extends ArticleViewAction
     public $isPublic = false;
 
     /**
-     * @inheritdoc
+     * Apply validation process.
+     *
+     * @return bool
      */
     public function validates()
     {
@@ -47,11 +49,17 @@ class ArticleDeleteAction extends ArticleViewAction
         return !empty($result);
     }
 
-    protected function _getEntity($id)
+    /**
+     * Returns single entity by id.
+     *
+     * @param mixed $primaryKey Primary key.
+     * @return \Cake\Collection\Collection
+     */
+    protected function _getEntity($primaryKey)
     {
         return $this->getTable()
           ->find('apiFormat')
-          ->where(['Articles.slug' => $id])
+          ->where(['Articles.slug' => $primaryKey])
           ->firstOrFail();
     }
 }

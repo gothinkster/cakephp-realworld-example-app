@@ -12,13 +12,18 @@
 namespace App\Service\Action\Profile;
 
 use Cake\ORM\TableRegistry;
-use CakeDC\Api\Service\Action\CrudAction;
 
 class ProfileFollowAction extends ProfileViewAction
 {
 
     public $isPublic = false;
 
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);

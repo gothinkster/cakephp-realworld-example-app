@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "20653d11cc6f824efc96ac44ba3c7478",
-    "content-hash": "ee5ed84467db149033d26d23441f1578",
+    "hash": "37e75e6309315769183c4270eec69f60",
+    "content-hash": "7a54ef8f7d283e9d5b2599f69d49faa9",
     "packages": [
         {
             "name": "aura/intl",
@@ -110,12 +110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/cakephp-api.git",
-                "reference": "bdfbb5aecf88386bd9840e10be8f320dd8095ca1"
+                "reference": "6e69bb83bac5cd4bff871c707f155189dcc6a22c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/bdfbb5aecf88386bd9840e10be8f320dd8095ca1",
-                "reference": "bdfbb5aecf88386bd9840e10be8f320dd8095ca1",
+                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/6e69bb83bac5cd4bff871c707f155189dcc6a22c",
+                "reference": "6e69bb83bac5cd4bff871c707f155189dcc6a22c",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "hateaos",
                 "rest"
             ],
-            "time": "2017-05-08 16:13:05"
+            "time": "2017-05-08 19:48:21"
         },
         {
             "name": "cakedc/users",
@@ -1058,16 +1058,16 @@
         },
         {
             "name": "skie/cakephp-factory-muffin",
-            "version": "dev-master",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skie/cakephp-factory-muffin.git",
-                "reference": "38c22fd64ebf54e5a96685d5a5b24e0af9ab0767"
+                "reference": "3236b10e48c8eb3af3c708b0392a9f2ee5217b21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skie/cakephp-factory-muffin/zipball/38c22fd64ebf54e5a96685d5a5b24e0af9ab0767",
-                "reference": "38c22fd64ebf54e5a96685d5a5b24e0af9ab0767",
+                "url": "https://api.github.com/repos/skie/cakephp-factory-muffin/zipball/3236b10e48c8eb3af3c708b0392a9f2ee5217b21",
+                "reference": "3236b10e48c8eb3af3c708b0392a9f2ee5217b21",
                 "shasum": ""
             },
             "require": {
@@ -1105,7 +1105,7 @@
                 "filter",
                 "search"
             ],
-            "time": "2017-05-07 00:05:59"
+            "time": "2017-05-08 22:09:01"
         },
         {
             "name": "symfony/config",
@@ -1546,6 +1546,51 @@
                 "cakephp"
             ],
             "time": "2017-05-07 01:46:45"
+        },
+        {
+            "name": "cakephp/cakephp-codesniffer",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/cakephp-codesniffer.git",
+                "reference": "650b673ab270afdbc680abbf1aa83ce9e9c640fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/650b673ab270afdbc680abbf1aa83ce9e9c640fa",
+                "reference": "650b673ab270afdbc680abbf1aa83ce9e9c640fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "squizlabs/php_codesniffer": "^3.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "<6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CakePHP\\": "CakePHP"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/cakephp-codesniffer/graphs/contributors"
+                }
+            ],
+            "description": "CakePHP CodeSniffer Standards",
+            "homepage": "http://cakephp.org",
+            "keywords": [
+                "codesniffer",
+                "framework"
+            ],
+            "time": "2017-05-07 18:18:30"
         },
         {
             "name": "cakephp/debug_kit",
@@ -3725,6 +3770,57 @@
                 "phra"
             ],
             "time": "2015-10-13 18:44:15"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "b95ff2c3b122a3ee4b57d149a57d2afce65522c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b95ff2c3b122a3ee4b57d149a57d2afce65522c3",
+                "reference": "b95ff2c3b122a3ee4b57d149a57d2afce65522c3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "bin/phpcs",
+                "bin/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2017-05-04 00:33:04"
         },
         {
             "name": "symfony/finder",

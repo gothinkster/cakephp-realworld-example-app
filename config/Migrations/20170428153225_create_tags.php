@@ -14,6 +14,11 @@ use Phinx\Migration\AbstractMigration;
 class CreateTags extends AbstractMigration
 {
 
+    /**
+     * Migration change method.
+     *
+     * @return void
+     */
     public function change()
     {
         $table = $this->table('tags_tags', ['id' => false, 'primary_key' => ['id']]);
@@ -50,7 +55,7 @@ class CreateTags extends AbstractMigration
             'null' => true,
         ]);
         $table->create();
-		
+
         $table = $this->table('tags_tagged', ['id' => false, 'primary_key' => ['id']]);
         $table->addColumn('id', 'uuid', [
             'null' => false,
@@ -88,6 +93,6 @@ class CreateTags extends AbstractMigration
         $table->update();
         $table = $this->table('tags_tagged');
         $table->addIndex(['tag_id', 'fk_id', 'fk_table'], ['unique' => true]);
-        $table->update();		
+        $table->update();
     }
 }

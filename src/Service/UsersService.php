@@ -23,7 +23,6 @@ use CakeDC\Api\Service\FallbackService;
 class UsersService extends FallbackService
 {
 
-
     /**
      * Actions classes map.
      *
@@ -34,7 +33,8 @@ class UsersService extends FallbackService
     ];
 
     /**
-     * @inheritdoc
+     * Initialize method
+     *
      * @return void
      */
     public function initialize()

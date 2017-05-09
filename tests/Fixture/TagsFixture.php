@@ -3,11 +3,21 @@ namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-
+// @codingStandardsIgnoreStart
 class TagsFixture extends TestFixture
 {
+    /**
+     * Table name
+     *
+     * @var array
+     */
     public $table = 'tags_tags';
 
+    /**
+     * Fields
+     *
+     * @var array
+     */
     public $fields = [
         'id' => ['type' => 'integer'],
         'namespace' => ['type' => 'string', 'length' => 255, 'null' => true],
@@ -22,5 +32,11 @@ class TagsFixture extends TestFixture
         ],
     ];
 
+    /**
+     * Records
+     *
+     * @var array
+     */
     public $records = [];
 }
+// @codingStandardsIgnoreEnd

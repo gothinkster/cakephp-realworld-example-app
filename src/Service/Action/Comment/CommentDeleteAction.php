@@ -18,7 +18,9 @@ class CommentDeleteAction extends ChildArticleAction
 {
 
     /**
-     * @inheritdoc
+     * Apply validation process.
+     *
+     * @return bool
      */
     public function validates()
     {

@@ -5,8 +5,14 @@ namespace App\Model\Factory;
 use CakephpFactoryMuffin\Model\Factory\AbstractFactory;
 use League\FactoryMuffin\Faker\Facade as Faker;
 
-class UsersFactory extends AbstractFactory {
+class UsersFactory extends AbstractFactory
+{
 
+    /**
+     * Returns factory definition.
+     *
+     * @return array
+     */
     public function definition()
     {
         return [
@@ -17,7 +23,7 @@ class UsersFactory extends AbstractFactory {
             'password' => 'passwd',
             'email' => Faker::unique()->safeEmail(),
             'bio' => Faker::sentence(),
-			'image' => Faker::imageUrl(100, 100, 'people'),
+            'image' => Faker::imageUrl(100, 100, 'people'),
         ];
     }
 }

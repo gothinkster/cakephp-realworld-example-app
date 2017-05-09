@@ -4,8 +4,8 @@ namespace App\Test\TestCase\Service;
 
 use App\Test\FixturesTrait;
 use App\Test\TestCase\IntegrationTestCase;
-use Cake\ORM\TableRegistry;
 use CakephpFactoryMuffin\FactoryLoader;
+use Cake\ORM\TableRegistry;
 
 class ArticlesServiceTest extends IntegrationTestCase
 {
@@ -70,8 +70,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->sendRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $this->assertArraySubset([
-			'articles' => [],
-			'articlesCount' => 0
+            'articles' => [],
+            'articlesCount' => 0
         ], $this->responseJson());
     }
 
@@ -79,7 +79,7 @@ class ArticlesServiceTest extends IntegrationTestCase
     {
         $articles = FactoryLoader::seed(2, 'Articles', ['author_id' => $this->user->id]);
 
-		TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
+        TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
@@ -102,7 +102,7 @@ class ArticlesServiceTest extends IntegrationTestCase
     {
         $articles = FactoryLoader::seed(25, 'Articles', ['author_id' => $this->user->id]);
 
-		TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
+        TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
@@ -128,17 +128,14 @@ class ArticlesServiceTest extends IntegrationTestCase
                  ->take(10)
                  ->extract('slug')
                  ->toArray();
-        $this->assertEquals(array_values($articles),
-            array_column($response['articles'], 'slug'),
-            'Expected latest 10 feed articles with 5 offset'
-        );
+        $this->assertEquals(array_values($articles), array_column($response['articles'], 'slug'), 'Expected latest 10 feed articles with 5 offset');
     }
 
     public function testReturnFeedWithFavoriteAndFollowingFilled()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
 
-		TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
+        TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendRequest("/articles/feed", 'GET');
         $this->assertStatus(200);

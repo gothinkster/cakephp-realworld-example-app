@@ -41,7 +41,15 @@ class Tag extends Entity
         'id' => false
     ];
 
-    public function _getTag() {
+    /**
+     * Label getter.
+     *
+     * @return string
+     */
+// @codingStandardsIgnoreStart
+    public function _getTag()
+    {
         return $this->get('label');
     }
+// @codingStandardsIgnoreEnd
 }

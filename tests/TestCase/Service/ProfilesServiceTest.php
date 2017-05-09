@@ -31,7 +31,6 @@ class ProfilesServiceTest extends IntegrationTestCase
         $this->assertStatus(404);
     }
 
-
     public function testFollowAndUnfollow()
     {
         $this->sendRequest("/profiles/{$this->user->username}/follow", 'POST');

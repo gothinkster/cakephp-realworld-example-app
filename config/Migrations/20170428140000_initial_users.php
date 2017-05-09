@@ -13,6 +13,12 @@ use Phinx\Migration\AbstractMigration;
 
 class InitialUsers extends AbstractMigration
 {
+
+    /**
+     * Migration change method.
+     *
+     * @return void
+     */
     public function change()
     {
         $this->table('users', ['id' => false, 'primary_key' => ['id']])
@@ -169,7 +175,7 @@ class InitialUsers extends AbstractMigration
             ->addColumn('modified', 'datetime', [
                 'null' => false,
             ])
-            ->addForeignKey('user_id', 'users', 'id', array('delete' => 'CASCADE', 'update' => 'CASCADE'))
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
     }
 }

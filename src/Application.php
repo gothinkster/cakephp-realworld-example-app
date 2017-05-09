@@ -10,16 +10,14 @@
  */
 namespace App;
 
-use App\PasswordHasher\PlainPasswordHasher;
 use Authentication\AuthenticationService;
 use Authentication\Middleware\AuthenticationMiddleware;
 use CakeDC\Api\Middleware\ApiMiddleware;
-use Cake\Core\Configure;
+use CakeDC\Api\Middleware\RequestHandlerMiddleware;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use CakeDC\Api\Middleware\RequestHandlerMiddleware;
 
 /**
  * Application setup class.

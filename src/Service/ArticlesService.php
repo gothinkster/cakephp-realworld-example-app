@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright 2017, Cake Development Corporation (http://cakedc.com)
  *
@@ -18,7 +18,7 @@ use CakeDC\Api\Routing\ApiRouter;
 use CakeDC\Api\Service\FallbackService;
 use Cake\Routing\RouteBuilder;
 
-class ArticlesService extends FallbackService 
+class ArticlesService extends FallbackService
 {
 
     /**
@@ -34,9 +34,9 @@ class ArticlesService extends FallbackService
         'delete' => '\App\Service\Action\Article\ArticleDeleteAction',
     ];
 
-
     /**
-     * @inheritdoc
+     * Initialize method
+     *
      * @return void
      */
     public function initialize()
@@ -77,5 +77,4 @@ class ArticlesService extends FallbackService
             });
         });
     }
-
 }

@@ -20,6 +20,12 @@ class ArticleViewAction extends CrudAction
 
     public $isPublic = true;
 
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -43,7 +49,7 @@ class ArticleViewAction extends CrudAction
      *
      * @return array
      */
-    public function _viewArticle()
+    protected function _viewArticle()
     {
         $record = $this->getTable()
               ->find('apiFormat', [
@@ -53,5 +59,16 @@ class ArticleViewAction extends CrudAction
               ->firstOrFail();
 
         return ['article' => $record];
+    }
+
+    /**
+     * Build condition for get entity method.
+     *
+     * @param string $primaryKey Record id.
+     * @return array
+     */
+    protected function _buildViewCondition($primaryKey)
+    {
+        return ['Articles.slug' => $this->_id];
     }
 }

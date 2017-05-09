@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright 2017, Cake Development Corporation (http://cakedc.com)
  *
@@ -18,7 +18,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\RouteBuilder;
 use Cake\Utility\Inflector;
 
-class CommentsService extends FallbackService 
+class CommentsService extends FallbackService
 {
 
     /**
@@ -46,5 +46,4 @@ class CommentsService extends FallbackService
             $routes->resources($this->getName(), $options);
         });
     }
-
 }

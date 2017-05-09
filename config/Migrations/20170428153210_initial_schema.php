@@ -14,6 +14,11 @@ use Phinx\Migration\AbstractMigration;
 class InitialSchema extends AbstractMigration
 {
 
+    /**
+     * Migration change method.
+     *
+     * @return void
+     */
     public function change()
     {
         $this->table('articles', ['id' => false, 'primary_key' => ['id']])
@@ -84,7 +89,6 @@ class InitialSchema extends AbstractMigration
             ])
             ->addIndex(['article_id'])
             ->create();
-
 
         $this->table('follows', ['id' => false, 'primary_key' => ['id']])
             ->addColumn('id', 'uuid', [

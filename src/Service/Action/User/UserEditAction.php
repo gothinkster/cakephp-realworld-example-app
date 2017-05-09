@@ -21,6 +21,11 @@ use Cake\Utility\Hash;
 class UserEditAction extends CrudAction
 {
 
+    /**
+     * Action constructor.
+     *
+     * @param array $config Configuration options passed to the constructor
+     */
     public function __construct(array $config = [])
     {
         parent::__construct($config);

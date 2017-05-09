@@ -4,8 +4,8 @@ namespace App\Test\TestCase\Service;
 
 use App\Test\FixturesTrait;
 use App\Test\TestCase\IntegrationTestCase;
-use Cake\ORM\TableRegistry;
 use CakephpFactoryMuffin\FactoryLoader;
+use Cake\ORM\TableRegistry;
 
 class CommentsServiceTest extends IntegrationTestCase
 {
@@ -59,6 +59,10 @@ class CommentsServiceTest extends IntegrationTestCase
         $this->sendRequest("/articles/{$this->article->slug}/comments", 'GET', []);
         $this->assertStatus(200);
         $response = $this->responseJson();
+
+        $comments = collection($comments)->sortBy(function ($comment) {
+            return $comment->created->format('Y-m-d H:i:s');
+        }, SORT_DESC, SORT_STRING)->toList();
 
         $this->assertArraySubset([
             'comments' => [
@@ -123,7 +127,7 @@ class CommentsServiceTest extends IntegrationTestCase
             'author_id' => $userId,
             'article_id' => $this->article->id,
         ]);
+
         return $comment;
     }
 }
-

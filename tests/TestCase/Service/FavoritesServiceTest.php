@@ -4,8 +4,8 @@ namespace App\Test\TestCase\Service;
 
 use App\Test\FixturesTrait;
 use App\Test\TestCase\IntegrationTestCase;
-use Cake\ORM\TableRegistry;
 use CakephpFactoryMuffin\FactoryLoader;
+use Cake\ORM\TableRegistry;
 
 class FavoritesServiceTest extends IntegrationTestCase
 {

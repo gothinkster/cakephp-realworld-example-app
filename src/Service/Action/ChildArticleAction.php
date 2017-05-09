@@ -11,14 +11,20 @@
 
 namespace App\Service\Action;
 
-use Cake\ORM\TableRegistry;
 use CakeDC\Api\Service\Action\CrudAction;
+use Cake\ORM\TableRegistry;
 
 abstract class ChildArticleAction extends CrudAction
 {
 
     public $extensions = [];
 
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -27,5 +33,4 @@ abstract class ChildArticleAction extends CrudAction
             $this->_parentId = $article->id;
         }
     }
-
 }

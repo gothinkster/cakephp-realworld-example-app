@@ -13,8 +13,8 @@ namespace App\Model\Table;
 
 use App\Utility\Formatter;
 use Cake\ORM\Query;
-use Muffin\Tags\Model\Table\TagsTable as Table;
 use Cake\Validation\Validator;
+use Muffin\Tags\Model\Table\TagsTable as Table;
 
 /**
  * Tags Model
@@ -69,8 +69,8 @@ class TagsTable extends Table
     /**
      * Api finder and endpoint formatter.
      *
-     * @param \Cake\ORM\Query  $query
-     * @param array $options
+     * @param \Cake\ORM\Query $query Query object.
+     * @param array $options Query options.
      * @return \Cake\ORM\Query The query builder.
      */
     public function findApiFormat(Query $query, array $options)

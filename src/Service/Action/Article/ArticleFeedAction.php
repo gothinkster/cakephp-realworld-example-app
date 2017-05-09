@@ -24,6 +24,7 @@ class ArticleFeedAction extends ArticleIndexBase
     protected function _getQuery()
     {
         $user = $this->Auth->identify();
+
         return $this->getTable()->find('apiFormat', [
             'feed_by' => $this->Auth->user('id'),
             'currentUser' => $this->Auth->user('id'),

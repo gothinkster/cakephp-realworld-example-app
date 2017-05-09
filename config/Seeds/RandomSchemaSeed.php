@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreStart
 
 use CakephpFactoryMuffin\FactoryLoader;
 use Migrations\AbstractSeed;
@@ -129,3 +130,4 @@ class RandomSchemaSeed extends AbstractSeed
         }
     }
 }
+// @codingStandardsIgnoreEnd

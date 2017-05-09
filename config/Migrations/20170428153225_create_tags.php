@@ -8,6 +8,7 @@
  * @copyright Copyright 2017, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+// @codingStandardsIgnoreStart
 
 use Phinx\Migration\AbstractMigration;
 
@@ -96,3 +97,4 @@ class CreateTags extends AbstractMigration
         $table->update();
     }
 }
+// @codingStandardsIgnoreEnd

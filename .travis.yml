@@ -5,13 +5,15 @@ dist: trusty
 sudo: false
 
 php:
-  - 5.6
   - 7.0
   - 7.1
 
+services:
+  - mysql
+
 env:
   matrix:
-    - DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
+    - DB=mysql DATABASE_TEST_URL='mysql://root:password@127.0.0.1/cakephp_test'
 
 matrix:
   fast_finish: true
@@ -21,10 +23,9 @@ matrix:
       env: PHPCS=1
 
 before_script:
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE cakephp_test;'; fi"
-  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:~2.1; fi
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS cakephp_test;'; fi"
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - if [[ $PHPCS != 1 ]]; then composer install; fi
-  - if [[ $PHPCS != 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
   - if [[ $PHPCS != 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
 
 script:

@@ -14,7 +14,7 @@ Please check the official cakephp installation guide for server requirements bef
 
 Clone the repository
 
-    git clone git@github.com:CakeDC/cakephp-realworld-example-app.git
+    git clone git@github.com:gothinkster/cakephp-realworld-example-app.git
 
 Switch to the repo folder
 

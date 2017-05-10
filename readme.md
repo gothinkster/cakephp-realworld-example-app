@@ -37,6 +37,14 @@ Start the local development server
     bin/cake server
 
 You can now access the server at http://localhost:8765
+
+## Database seeding
+
+**Populate the database with seed data with relationships which includes users, articles, comments, tags, favorites and follows. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.**
+
+Run the database seeder and you're done
+
+    bin/cake migrations seed
 	
 ## API Specification
 

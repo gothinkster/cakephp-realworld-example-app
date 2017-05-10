@@ -20,7 +20,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'body' => 'article body text',
             ]
         ];
-		
+
         $this->sendRequest("/articles", 'POST', $data);
         $this->assertStatus(200);
         $this->assertArraySubset([
@@ -40,7 +40,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 ]
             ]
         ], $this->responseJson());
-		
+
         $data['article']['tagList'] = ['mytag'];
 
         $this->sendRequest("/articles", 'POST', $data);

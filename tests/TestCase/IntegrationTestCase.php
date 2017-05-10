@@ -29,7 +29,8 @@ abstract class IntegrationTestCase extends BaseTestCase
         $this->user = $users[1];
 
         $this->headers = [
-            'Authorization' => "Token {$this->loggedInUser->token}"
+            'Authorization' => "Token {$this->loggedInUser->token}",
+            'Content-Type' => 'application/json',
         ];
     }
 

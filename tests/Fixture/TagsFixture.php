@@ -19,7 +19,7 @@ class TagsFixture extends TestFixture
      * @var array
      */
     public $fields = [
-        'id' => ['type' => 'integer'],
+        'id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'namespace' => ['type' => 'string', 'length' => 255, 'null' => true],
         'tag_key' => ['type' => 'string', 'length' => 255],
         'slug' => ['type' => 'string', 'length' => 255],

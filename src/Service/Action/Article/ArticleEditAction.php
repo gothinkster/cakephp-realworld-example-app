@@ -54,8 +54,7 @@ class ArticleEditAction extends ArticleViewAction
      */
     public function execute()
     {
-        $data = Hash::get($this->data(), 'article');
-        unset($data['author']);
+        $data = $this->_articleData();
         $entity = $this->_patchEntity($this->_getEntityBySlug(), $data);
 
         if ($this->_save($entity)) {
@@ -85,5 +84,19 @@ class ArticleEditAction extends ArticleViewAction
     protected function _getEntityBySlug()
     {
         return $this->getTable()->find()->where(['Articles.slug' => $this->_id])->firstOrFail();
+    }
+
+    /**
+     * @return array
+     */
+    protected function _articleData()
+    {
+        $data = Hash::get($this->data(), 'article');
+        unset($data['author']);
+        if (!empty($data['tagList']) && is_array($data['tagList'])) {
+            $data['tagList'] = join(' ', $data['tagList']);
+        }
+
+        return $data;
     }
 }

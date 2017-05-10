@@ -26,7 +26,6 @@ class ArticleDeleteAction extends ArticleViewAction
     public function validates()
     {
         $record = $this->_getEntity($this->_id);
-
         if ($record['author_id'] != $this->Auth->user('id')) {
             throw new ForbiddenException();
         }
@@ -58,7 +57,7 @@ class ArticleDeleteAction extends ArticleViewAction
     protected function _getEntity($primaryKey)
     {
         return $this->getTable()
-          ->find('apiFormat')
+          ->find()
           ->where(['Articles.slug' => $primaryKey])
           ->firstOrFail();
     }

@@ -25,11 +25,12 @@ class CommentsFactory extends AbstractFactory
             },
             'created' => Faker::dateTimeBetween('-2 year', 'now'),
             'modified' => Faker::dateTimeBetween('-2 year', 'now'),
-            'author_id' => function ($item) {
-                $users = TableRegistry::get('Users')->find()->select(['id'])->all()->toArray();
-
-                return $users[rand(0, count($users) - 1)]->id;
-            }
+//            'author_id' => function ($item) {
+//                $users = TableRegistry::get('Users')->find()->select(['id'])->all()->toArray();
+//
+//                return $users[rand(0, count($users) - 1)]->id;
+//            }
+            'author_id' => 'factory|' . UsersFactory::class
         ];
     }
 }

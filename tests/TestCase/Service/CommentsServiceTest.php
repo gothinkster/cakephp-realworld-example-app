@@ -28,7 +28,7 @@ class CommentsServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles/{$this->article->slug}/comments", 'POST', ($data));
+        $this->sendRequest("/articles/{$this->article->slug}/comments", 'POST', json_encode($data));
         $this->assertStatus(200);
 
         $this->assertArraySubset([

@@ -11,6 +11,123 @@ class ArticlesServiceTest extends IntegrationTestCase
 {
     use FixturesTrait;
 
+    public function testSuccessAddArticle()
+    {
+        $data = [
+            'article' => [
+                'title' => 'my article title',
+                'description' => 'article description',
+                'body' => 'article body text',
+            ]
+        ];
+		
+        $this->sendRequest("/articles", 'POST', $data);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'article' => [
+                'slug' => 'my-article-title',
+                'title' => 'my article title',
+                'description' => 'article description',
+                'body' => 'article body text',
+                'tagList' => [],
+                'favorited' => false,
+                'favoritesCount' => 0,
+                'author' => [
+                    'username' => $this->loggedInUser->username,
+                    'bio' => $this->loggedInUser->bio,
+                    'image' => $this->loggedInUser->image,
+                    'following' => false,
+                ]
+            ]
+        ], $this->responseJson());
+		
+        $data['article']['tagList'] = ['mytag'];
+
+        $this->sendRequest("/articles", 'POST', $data);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+                'article' => [
+                    'title' => 'my article title',
+                    'slug' => 'my-article-title-1',
+                    'tagList' => ['mytag'],
+                    'author' => [
+                        'username' => $this->loggedInUser->username,
+                    ]
+                ]
+        ], $this->responseJson());
+    }
+
+    public function testValidationErrorsOnAddArticle()
+    {
+        $data = [
+            'article' => [
+                'title' => '',
+            ]
+        ];
+
+        $this->sendRequest("/articles", 'POST', $data);
+        $this->assertStatus(422);
+        $this->assertArraySubset([
+            'errors' => [
+                'title' => ['This field cannot be left empty'],
+                'description' => ['This field is required'],
+                'body' => ['This field is required'],
+            ]
+        ], $this->responseJson());
+    }
+
+    public function testUnauthenticatedErrorOnAddIfNotLoggedIn()
+    {
+        $this->headers = [];
+        $this->sendRequest("/articles", 'POST', ['article' => ['body' => 'new text']]);
+        $this->assertStatus(401);
+    }
+
+    public function testUpdateArticle()
+    {
+        $article = FactoryLoader::create('Articles', ['author_id' => $this->loggedInUser->id]);
+
+        $data = [
+            'article' => [
+                'title' => 'new title',
+                'description' => 'new description',
+                'body' => 'new body message',
+            ]
+        ];
+
+        $this->sendRequest("/articles/{$article->slug}", 'PUT', $data);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+                'article' => [
+                    'title' => 'new title',
+                    'slug' => $article->slug,
+                    'description' => 'new description',
+                    'body' => 'new body message',
+                ]
+        ], $this->responseJson());
+    }
+
+    public function testValidationErrorsOnUpdateArticle()
+    {
+        $article = FactoryLoader::create('Articles', ['author_id' => $this->loggedInUser->id]);
+
+        $data = [
+            'article' => [
+                'title' => '',
+            ]
+        ];
+
+        $this->sendRequest("/articles/{$article->slug}", 'PUT', $data);
+        $this->assertStatus(422);
+        $this->assertEquals([
+            'errors' => [
+                'title' => ['This field cannot be left empty'],
+                'description' => ['This field is required'],
+                'body' => ['This field is required'],
+            ]
+        ], $this->responseJson());
+    }
+
     public function testUnauthenticatedErrorOnUpdateIfNotLoggedIn()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
@@ -21,7 +138,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertEquals($article->body, $record->body);
     }
 
-    public function testUpdateNotExistsArticles()
+    public function testUpdateNotExistsArticle()
     {
         $this->sendRequest("/articles/unknown", 'PUT', ['article' => ['body' => 'new text']]);
         $this->assertStatus(404);
@@ -45,7 +162,21 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertEquals(1, TableRegistry::get('Articles')->find()->where(['id' => $article->id])->count());
     }
 
-    public function testDeleteNotExistsArticles()
+    public function testDeleteExistsArticle()
+    {
+        $article = FactoryLoader::create('Articles', ['author_id' => $this->loggedInUser->id]);
+
+        $this->sendRequest("/articles/{$article->slug}", 'GET', []);
+        $this->assertStatus(200);
+
+        $this->sendRequest("/articles/{$article->slug}", 'DELETE', []);
+        $this->assertStatus(200);
+
+        $this->sendRequest("/articles/{$article->slug}", 'GET', []);
+        $this->assertStatus(404);
+    }
+
+    public function testDeleteNotExistsArticle()
     {
         $this->sendRequest("/articles/unknown", 'DELETE', []);
         $this->assertStatus(404);
@@ -158,7 +289,6 @@ class ArticlesServiceTest extends IntegrationTestCase
 
         $this->sendRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
-        $response = $this->responseJson();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -171,10 +301,10 @@ class ArticlesServiceTest extends IntegrationTestCase
                     ]
                 ],
             ]
-        ], $response);
+        ], $this->responseJson());
     }
 
-    public function testUnauthenticatedErrorIfNotLoggedIn()
+    public function testUnauthenticatedErrorOnFeedIfNotLoggedIn()
     {
         $this->headers = [];
         $this->sendRequest("/articles/feed", 'GET', []);

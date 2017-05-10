@@ -16,9 +16,13 @@ class TagsServiceTest extends IntegrationTestCase
         $tags = FactoryLoader::seed(5, 'Tags');
         $this->sendRequest("/tags", 'GET', []);
         $this->assertResponseOk();
+        $response = $this->responseJson();
+        sort($response['tags']);
+        $expected = Hash::extract($tags, '{n}.label');
+        sort($expected);
         $this->assertEquals([
-            'tags' => Hash::extract($tags, '{n}.label')
-        ], $this->responseJson());
+            'tags' => $expected
+        ], $response);
     }
 
     public function testEmptyTagList()

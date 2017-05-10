@@ -61,6 +61,7 @@ class ArticlesTable extends Table
         $this->addBehavior('Muffin/Tags.Tag', [
             'delimiter' => ' ',
             'tagsAssoc' => [
+                'className' => 'Tags',
                 'propertyName' => 'tagList',
             ],
         ]);
@@ -100,9 +101,11 @@ class ArticlesTable extends Table
             ->allowEmpty('slug');
 
         $validator
+            ->requirePresence('description')
             ->allowEmpty('description');
 
         $validator
+            ->requirePresence('body')
             ->allowEmpty('body');
 
         return $validator;
@@ -178,7 +181,7 @@ class ArticlesTable extends Table
 
         return $query
             ->contain(['Tags'])
-            ->select(['title', 'slug', 'description', 'body', 'created', 'modified', 'author_id', 'favorites_count'])
+            ->select(['id', 'title', 'slug', 'description', 'body', 'created', 'modified', 'author_id', 'favorites_count'])
             ->order(['Articles.created' => 'desc'])
             ->formatResults(function ($results) use ($options) {
                 return $results->map(function ($row) use ($options) {
@@ -187,13 +190,13 @@ class ArticlesTable extends Table
                     }
                     $row = Formatter::dateFormat($row);
                     $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
-                    if ($row['tags']) {
-                        $tags = collection($row['tags'])
+                    if ($row['tagList']) {
+                        $tags = collection($row['tagList'])
                             ->map(function ($tag) {
-                                return $tag['tag'];
+                                return $tag['label'];
                             })
                             ->toArray();
-                        unset($row['tags']);
+                        unset($row['tagList']);
                         $row['tagList'] = $tags;
                     } else {
                         $row['tagList'] = [];
@@ -204,6 +207,7 @@ class ArticlesTable extends Table
                         $row['favorited'] = 0;
                     }
                     $row['favoritesCount'] = $row['favorites_count'];
+                    unset($row['id']);
                     unset($row['author_id']);
                     unset($row['favorites_count']);
                     unset($row['Favorites']);

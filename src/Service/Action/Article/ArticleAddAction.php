@@ -12,10 +12,8 @@
 namespace App\Service\Action\Article;
 
 use CakeDC\Api\Exception\ValidationException;
-use CakeDC\Api\Service\Action\CrudAction;
-use Cake\Utility\Hash;
 
-class ArticleAddAction extends CrudAction
+class ArticleAddAction extends ArticleEditAction
 {
 
     /**
@@ -46,7 +44,7 @@ class ArticleAddAction extends CrudAction
     public function execute()
     {
         $entity = $this->_newEntity();
-        $data = Hash::get($this->data(), 'article');
+        $data = $this->_articleData();
         $data['author_id'] = $this->Auth->user('id');
         $entity = $this->_patchEntity($entity, $data);
 
@@ -56,19 +54,5 @@ class ArticleAddAction extends CrudAction
         }
 
         return null;
-    }
-
-    /**
-     * Returns single entity by id.
-     *
-     * @param mixed $primaryKey Primary key.
-     * @return \Cake\Collection\Collection
-     */
-    protected function _getEntity($primaryKey)
-    {
-        return $this->getTable()
-          ->find('apiFormat')
-          ->where(['Articles.slug' => $primaryKey])
-          ->firstOrFail();
     }
 }

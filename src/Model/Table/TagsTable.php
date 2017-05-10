@@ -45,10 +45,7 @@ class TagsTable extends Table
         parent::initialize($config);
 
         $this->setTable('tags_tags');
-//        $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
-//        $this->addBehavior('Timestamp');
     }
 
     /**

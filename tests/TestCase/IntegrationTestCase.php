@@ -2,9 +2,9 @@
 
 namespace App\Test\TestCase;
 
-use Cake\Datasource\EntityInterface;
 use CakeDC\Api\TestSuite\IntegrationTestCase as BaseTestCase;
 use CakephpFactoryMuffin\FactoryLoader;
+use Cake\Datasource\EntityInterface;
 
 abstract class IntegrationTestCase extends BaseTestCase
 {

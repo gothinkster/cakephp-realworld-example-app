@@ -11,11 +11,8 @@
 
 return [
     'Api' => [
-        // if service class is not defined we use crud fallback service
         'ServiceFallback' => '\\CakeDC\\Api\\Service\\FallbackService',
-        // response rendered as JSend
         'renderer' => 'AppJson',
-        // Data parse from cakephp request object
         'parser' => 'CakeDC/Api.Form',
 
         'useVersioning' => false,
@@ -37,23 +34,9 @@ return [
                 'Action' => [
                     'default' => [
                         'Auth' => [
-                            'authorize' => [
-                                'CakeDC/Api.Crud' => []
-                            ],
                             'authenticate' => [
                                 'CakeDC/Api.Psr7'
                             ],
-                        ],
-                        // default app extensions
-                        'Extension' => [
-                            'CakeDC/Api.Cors',
-                            'CakeDC/Api.Sort',
-                        ]
-                    ],
-                    // all index actions configuration
-                    'Index' => [
-                        'Extension' => [
-                            'CakeDC/Api.Cors',
                         ],
                     ],
                 ],

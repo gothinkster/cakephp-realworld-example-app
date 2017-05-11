@@ -11,7 +11,7 @@ class UserServiceTest extends IntegrationTestCase
 
     public function testValidUserIfLogged()
     {
-        $this->sendRequest("/user", 'GET');
+        $this->sendAuthJsonRequest("/user", 'GET');
         $this->assertStatus(200);
 
         $this->assertArraySubset([
@@ -26,8 +26,7 @@ class UserServiceTest extends IntegrationTestCase
 
     public function testUnauthorizedIdNotLoggedIn()
     {
-        $this->headers = [];
-        $this->sendRequest("/user", 'GET');
+        $this->sendJsonRequest("/user", 'GET');
         $this->assertStatus(401);
     }
 
@@ -42,7 +41,7 @@ class UserServiceTest extends IntegrationTestCase
                 'image' => 'http://image.com/user.jpg',
             ]
         ];
-        $this->sendRequest("/user", 'PUT', $data);
+        $this->sendAuthJsonRequest("/user", 'PUT', $data);
         $this->assertStatus(200);
 
         $this->assertArraySubset([
@@ -54,7 +53,7 @@ class UserServiceTest extends IntegrationTestCase
             ]
         ], $this->responseJson());
 
-        $this->sendRequest("/user", 'GET');
+        $this->sendAuthJsonRequest("/user", 'GET');
         $this->assertStatus(200);
         $this->assertArraySubset([
             'user' => [
@@ -78,7 +77,7 @@ class UserServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/user", 'PUT', $data);
+        $this->sendAuthJsonRequest("/user", 'PUT', $data);
         $this->assertStatus(422);
 
         $this->assertEquals([
@@ -101,7 +100,7 @@ class UserServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/user", 'PUT', $data);
+        $this->sendAuthJsonRequest("/user", 'PUT', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [

@@ -28,7 +28,7 @@ class CommentsServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles/{$this->article->slug}/comments", 'POST', json_encode($data));
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments", 'POST', $data);
         $this->assertStatus(200);
 
         $this->assertArraySubset([
@@ -44,7 +44,7 @@ class CommentsServiceTest extends IntegrationTestCase
     public function testRemoveExistsComment()
     {
         $comment = $this->_generateComment($this->loggedInUser->id);
-        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE');
         $this->assertStatus(200);
 
         $this->assertEquals(0, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
@@ -56,7 +56,7 @@ class CommentsServiceTest extends IntegrationTestCase
             'author_id' => $this->user->id,
             'article_id' => $this->article->id,
         ]);
-        $this->sendRequest("/articles/{$this->article->slug}/comments", 'GET', []);
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments", 'GET');
         $this->assertStatus(200);
         $response = $this->responseJson();
 
@@ -87,8 +87,7 @@ class CommentsServiceTest extends IntegrationTestCase
     public function testUnauthenticatedErrorOnDeleteIfNotLoggedIn()
     {
         $comment = $this->_generateComment($this->user->id);
-        $this->headers = [];
-        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->sendJsonRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE');
         $this->assertStatus(401);
 
         $this->assertEquals(1, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
@@ -96,23 +95,23 @@ class CommentsServiceTest extends IntegrationTestCase
 
     public function testDeleteNotExistsComment()
     {
-        $this->sendRequest("/articles/{$this->article->slug}/comments/999999", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/999999", 'DELETE');
         $this->assertStatus(404);
 
-        $this->sendRequest("/articles/unknown/comments/999999", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/unknown/comments/999999", 'DELETE');
         $this->assertStatus(404);
     }
 
     public function testListCommentsForNonExistsArticle()
     {
-        $this->sendRequest("/articles/unknown/comments", 'GET', []);
+        $this->sendAuthJsonRequest("/articles/unknown/comments", 'GET');
         $this->assertStatus(404);
     }
 
     public function testForbiddenErrorIfDeleteOtherUserComment()
     {
         $comment = $this->_generateComment($this->user->id);
-        $this->sendRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE');
         $this->assertStatus(403);
         $this->assertEquals(1, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
     }

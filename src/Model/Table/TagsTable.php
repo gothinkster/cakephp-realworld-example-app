@@ -73,6 +73,8 @@ class TagsTable extends Table
     public function findApiFormat(Query $query, array $options)
     {
         return $query
+            ->order(['counter' => 'desc'])
+            ->limit(20)
             ->formatResults(function ($results) use ($options) {
                 return $results->map(function ($row) {
                     if ($row === null) {

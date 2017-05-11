@@ -4,12 +4,259 @@ namespace App\Test\TestCase\Service;
 
 use App\Test\FixturesTrait;
 use App\Test\TestCase\IntegrationTestCase;
+use Cake\Utility\Hash;
 use CakephpFactoryMuffin\FactoryLoader;
 use Cake\ORM\TableRegistry;
 
 class ArticlesServiceTest extends IntegrationTestCase
 {
     use FixturesTrait;
+
+    public function testSuccessEmptyArticlesListOnFavorites()
+    {
+        $this->sendJsonRequest("/articles", 'GET', ['favorited' => $this->user->username]);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+
+        $this->sendJsonRequest("/articles", 'GET', ['favorited' => "unknown"]);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+    }
+
+    public function testSuccessEmptyArticlesListOnTagFilter()
+    {
+        $this->sendJsonRequest("/articles", 'GET', ['tag' => 'tag']);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+    }
+
+    public function testArticlesListOnFavorites()
+    {
+        $articles = FactoryLoader::seed(5, 'Articles', ['author_id' => $this->loggedInUser->id]);
+        $articles = collection($articles)->sortBy(function ($comment) {
+            return $comment->created->format('Y-m-d H:i:s');
+        }, SORT_DESC, SORT_STRING)->toList();
+
+        TableRegistry::get('Articles')->favorite($articles[0]->id, $this->user->id);
+        TableRegistry::get('Articles')->favorite($articles[2]->id, $this->user->id);
+        TableRegistry::get('Articles')->favorite($articles[4]->id, $this->user->id);
+
+        $this->sendJsonRequest("/articles", 'GET', ['favorited' => $this->user->username]);
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+        $this->assertArraySubset([
+            'articles' => [
+                [
+                    'slug' => $articles[0]->slug,
+                    'title' => $articles[0]->title,
+                    'author' => [
+                        'username' => $this->loggedInUser->username
+                    ]
+                ],
+                [
+                    'slug' => $articles[2]->slug,
+                    'title' => $articles[2]->title,
+                    'author' => [
+                        'username' => $this->loggedInUser->username
+                    ]
+                ],
+                [
+                    'slug' => $articles[4]->slug,
+                    'title' => $articles[4]->title,
+                    'author' => [
+                        'username' => $this->loggedInUser->username
+                    ]
+                ],
+            ],
+            'articlesCount' => 3
+        ], $response);
+    }
+
+    public function testSuccessEmptyArticlesListOnAuthorFilter()
+    {
+        $this->sendJsonRequest("/articles", 'GET', ['author' => $this->user->username]);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+
+        $this->sendJsonRequest("/articles", 'GET', ['author' => "unknown"]);
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+    }
+
+    public function testArticlesListOnAuthorFilter()
+    {
+        $articles = FactoryLoader::seed(3, 'Articles', ['author_id' => $this->user->id]);
+        FactoryLoader::seed(5, 'Articles', ['author_id' => $this->loggedInUser->id]);
+        $articles = collection($articles)->sortBy(function ($comment) {
+            return $comment->created->format('Y-m-d H:i:s');
+        }, SORT_DESC, SORT_STRING)->toList();
+
+        $this->sendJsonRequest("/articles", 'GET', ['author' => $this->user->username]);
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+        $this->assertArraySubset([
+            'articles' => [
+                [
+                    'slug' => $articles[0]->slug,
+                    'title' => $articles[0]->title,
+                    'author' => [
+                        'username' => $this->user->username
+                    ]
+                ],
+                [
+                    'slug' => $articles[1]->slug,
+                    'title' => $articles[1]->title,
+                    'author' => [
+                        'username' => $this->user->username
+                    ]
+                ],
+                [
+                    'slug' => $articles[2]->slug,
+                    'title' => $articles[2]->title,
+                    'author' => [
+                        'username' => $this->user->username
+                    ]
+                ],
+            ],
+            'articlesCount' => 3
+        ], $response);
+    }
+
+    public function testSuccessEmptyArticlesList()
+    {
+        $this->sendJsonRequest("/articles", 'GET');
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [],
+            'articlesCount' => 0
+        ], $this->responseJson());
+    }
+
+    public function testArticlesList()
+    {
+        $articles = FactoryLoader::seed(2, 'Articles', ['author_id' => $this->user->id]);
+
+        $articles = collection($articles)->sortBy(function ($comment) {
+            return $comment->created->format('Y-m-d H:i:s');
+        }, SORT_DESC, SORT_STRING)->toList();
+
+        $this->sendJsonRequest("/articles", 'GET');
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+        $this->assertArraySubset([
+            'articles' => [
+                [
+                    'title' => $articles[0]->title,
+                    'slug' => $articles[0]->slug,
+                    'description' => $articles[0]->description,
+                    'body' => $articles[0]->body,
+                    'favorited' => false,
+                    'favoritesCount' => 0,
+                    'author' => [
+                        'username' => $this->user->username,
+                        'bio' => $this->user->bio,
+                        'image' => $this->user->image,
+                        'following' => false,
+                    ]
+                ],
+                [
+                    'title' => $articles[1]->title,
+                    'slug' => $articles[1]->slug,
+                ]
+            ],
+            'articlesCount' => 2
+        ], $response);
+    }
+
+    public function testArticlesListPaginated()
+    {
+        $articles = FactoryLoader::seed(25, 'Articles', ['author_id' => $this->user->id]);
+
+        $this->sendAuthJsonRequest("/articles", 'GET');
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+        $this->assertArraySubset([
+            'articlesCount' => 25
+        ], $response);
+        $this->assertCount(20, $response['articles'], 'Expected articles to set default limit to 20');
+
+        $this->sendAuthJsonRequest("/articles", 'GET', ['limit' => 10, 'offset' => 5]);
+        $this->assertStatus(200);
+        $response = $this->responseJson();
+        $this->assertArraySubset([
+            'articlesCount' => 25
+        ], $response);
+        $this->assertCount(10, $response['articles'], 'Expected articles to set limit to 10');
+        $articles = TableRegistry::get('Articles')->find()
+                 ->where(['author_id' => $this->user->id])
+                 ->select(['slug'])
+                 ->order(['created' => 'desc'])
+                 ->all()
+                 ->skip(5)
+                 ->take(10)
+                 ->extract('slug')
+                 ->toArray();
+        $this->assertEquals(array_values($articles), array_column($response['articles'], 'slug'), 'Expected latest 10 articles with 5 offset');
+    }
+
+    public function testArticlesListReturnFollowedUser()
+    {
+        $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
+
+        TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
+        TableRegistry::get('Articles')->favorite($article->id, $this->loggedInUser->id);
+
+        $this->sendAuthJsonRequest("/articles", 'GET');
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [
+                [
+                    'slug' => $article->slug,
+                    'title' => $article->title,
+                    'favorited' => true,
+                    'favoritesCount' => 1,
+                    'author' => [
+                        'username' => $this->user->username,
+                        'following' => true,
+                    ]
+                ]
+            ],
+            'articlesCount' => 1
+        ], $this->responseJson());
+
+        $this->sendJsonRequest("/articles", 'GET');
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'articles' => [
+                [
+                    'slug' => $article->slug,
+                    'title' => $article->title,
+                    'favorited' => false,
+                    'favoritesCount' => 1,
+                    'author' => [
+                        'username' => $this->user->username,
+                        'following' => false,
+                    ]
+                ]
+            ],
+            'articlesCount' => 1
+        ], $this->responseJson());
+    }
 
     public function testSuccessAddArticle()
     {
@@ -21,7 +268,7 @@ class ArticlesServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles", 'POST', $data);
+        $this->sendAuthJsonRequest("/articles", 'POST', $data);
         $this->assertStatus(200);
         $this->assertArraySubset([
             'article' => [
@@ -43,7 +290,7 @@ class ArticlesServiceTest extends IntegrationTestCase
 
         $data['article']['tagList'] = ['mytag'];
 
-        $this->sendRequest("/articles", 'POST', $data);
+        $this->sendAuthJsonRequest("/articles", 'POST', $data);
         $this->assertStatus(200);
         $this->assertArraySubset([
                 'article' => [
@@ -65,7 +312,7 @@ class ArticlesServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles", 'POST', $data);
+        $this->sendAuthJsonRequest("/articles", 'POST', $data);
         $this->assertStatus(422);
         $this->assertArraySubset([
             'errors' => [
@@ -78,8 +325,7 @@ class ArticlesServiceTest extends IntegrationTestCase
 
     public function testUnauthenticatedErrorOnAddIfNotLoggedIn()
     {
-        $this->headers = [];
-        $this->sendRequest("/articles", 'POST', ['article' => ['body' => 'new text']]);
+        $this->sendJsonRequest("/articles", 'POST', ['article' => ['body' => 'new text']]);
         $this->assertStatus(401);
     }
 
@@ -95,7 +341,7 @@ class ArticlesServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles/{$article->slug}", 'PUT', $data);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', $data);
         $this->assertStatus(200);
         $this->assertArraySubset([
                 'article' => [
@@ -117,7 +363,7 @@ class ArticlesServiceTest extends IntegrationTestCase
             ]
         ];
 
-        $this->sendRequest("/articles/{$article->slug}", 'PUT', $data);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [
@@ -131,8 +377,7 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testUnauthenticatedErrorOnUpdateIfNotLoggedIn()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
-        $this->headers = [];
-        $this->sendRequest("/articles/{$article->slug}", 'PUT', ['article' => ['body' => 'new text']]);
+        $this->sendJsonRequest("/articles/{$article->slug}", 'PUT', ['article' => ['body' => 'new text']]);
         $this->assertStatus(401);
         $record = TableRegistry::get('Articles')->find()->where(['slug' => $article->slug])->first();
         $this->assertEquals($article->body, $record->body);
@@ -140,14 +385,14 @@ class ArticlesServiceTest extends IntegrationTestCase
 
     public function testUpdateNotExistsArticle()
     {
-        $this->sendRequest("/articles/unknown", 'PUT', ['article' => ['body' => 'new text']]);
+        $this->sendAuthJsonRequest("/articles/unknown", 'PUT', ['article' => ['body' => 'new text']]);
         $this->assertStatus(404);
     }
 
     public function testForbiddenErrorIfUpdateOtherUserArticle()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
-        $this->sendRequest("/articles/{$article->slug}", 'PUT', ['article' => ['body' => 'new text']]);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', ['article' => ['body' => 'new text']]);
         $this->assertStatus(403);
         $this->assertEquals(1, TableRegistry::get('Articles')->find()->where(['id' => $article->id])->count());
     }
@@ -155,8 +400,7 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testUnauthenticatedErrorOnDeleteIfNotLoggedIn()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
-        $this->headers = [];
-        $this->sendRequest("/articles/{$article->slug}", 'DELETE', []);
+        $this->sendJsonRequest("/articles/{$article->slug}", 'DELETE', []);
         $this->assertStatus(401);
 
         $this->assertEquals(1, TableRegistry::get('Articles')->find()->where(['id' => $article->id])->count());
@@ -166,39 +410,63 @@ class ArticlesServiceTest extends IntegrationTestCase
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->loggedInUser->id]);
 
-        $this->sendRequest("/articles/{$article->slug}", 'GET', []);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'GET', []);
         $this->assertStatus(200);
 
-        $this->sendRequest("/articles/{$article->slug}", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'DELETE', []);
         $this->assertStatus(200);
 
-        $this->sendRequest("/articles/{$article->slug}", 'GET', []);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'GET', []);
         $this->assertStatus(404);
     }
 
     public function testDeleteNotExistsArticle()
     {
-        $this->sendRequest("/articles/unknown", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/unknown", 'DELETE', []);
         $this->assertStatus(404);
+    }
+
+    public function testViewArticle()
+    {
+        $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
+
+        $this->sendJsonRequest("/articles/{$article->slug}", 'GET');
+        $this->assertStatus(200);
+        $this->assertArraySubset([
+            'article' => [
+                'title' => $article->title,
+                'slug' => $article->slug,
+                'description' => $article->description,
+                'body' => $article->body,
+                'favorited' => false,
+                'favoritesCount' => 0,
+                'author' => [
+                    'username' => $this->user->username,
+                    'bio' => $this->user->bio,
+                    'image' => $this->user->image,
+                    'following' => false,
+                ]
+            ],
+        ], $this->responseJson());
     }
 
     public function testViewNonExistsArticle()
     {
-        $this->sendRequest("/articles/unknown", 'GET', []);
+        $this->sendAuthJsonRequest("/articles/unknown", 'GET');
         $this->assertStatus(404);
     }
 
     public function testForbiddenErrorIfDeleteOtherUserArticle()
     {
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
-        $this->sendRequest("/articles/{$article->slug}", 'DELETE', []);
+        $this->sendAuthJsonRequest("/articles/{$article->slug}", 'DELETE');
         $this->assertStatus(403);
         $this->assertEquals(1, TableRegistry::get('Articles')->find()->where(['id' => $article->id])->count());
     }
 
     public function testSuccessEmptyFeed()
     {
-        $this->sendRequest("/articles/feed", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $this->assertArraySubset([
             'articles' => [],
@@ -206,13 +474,13 @@ class ArticlesServiceTest extends IntegrationTestCase
         ], $this->responseJson());
     }
 
-    public function testReturnFollowedUserArticles()
+    public function testFeedReturnFollowedUserArticles()
     {
         $articles = FactoryLoader::seed(2, 'Articles', ['author_id' => $this->user->id]);
 
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
-        $this->sendRequest("/articles/feed", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $response = $this->responseJson();
         $this->assertArraySubset([
@@ -229,13 +497,13 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertEquals(array_values($articles), array_column($response['articles'], 'slug'));
     }
 
-    public function testReturnFollowedUserArticlesForHugeDataset()
+    public function testReturnFollowedUserArticlesPaginated()
     {
         $articles = FactoryLoader::seed(25, 'Articles', ['author_id' => $this->user->id]);
 
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
-        $this->sendRequest("/articles/feed", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $response = $this->responseJson();
         $this->assertArraySubset([
@@ -243,7 +511,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         ], $response);
         $this->assertCount(20, $response['articles'], 'Expected feed to set default limit to 20');
 
-        $this->sendRequest("/articles/feed?limit=10&offset=5", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed?limit=10&offset=5", 'GET');
         $this->assertStatus(200);
         $response = $this->responseJson();
         $this->assertArraySubset([
@@ -268,7 +536,7 @@ class ArticlesServiceTest extends IntegrationTestCase
 
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
-        $this->sendRequest("/articles/feed", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $response = $this->responseJson();
         $this->assertArraySubset([
@@ -287,7 +555,7 @@ class ArticlesServiceTest extends IntegrationTestCase
 
         TableRegistry::get('Articles')->favorite($article->id, $this->loggedInUser->id);
 
-        $this->sendRequest("/articles/feed", 'GET');
+        $this->sendAuthJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(200);
         $this->assertArraySubset([
             'articles' => [
@@ -306,8 +574,7 @@ class ArticlesServiceTest extends IntegrationTestCase
 
     public function testUnauthenticatedErrorOnFeedIfNotLoggedIn()
     {
-        $this->headers = [];
-        $this->sendRequest("/articles/feed", 'GET', []);
+        $this->sendJsonRequest("/articles/feed", 'GET');
         $this->assertStatus(401);
     }
 }

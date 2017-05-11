@@ -18,7 +18,7 @@ class RegisterTest extends IntegrationTestCase
                 'password' => 'secret',
             ]
         ];
-        $this->sendRequest("/users", 'POST', ($data));
+        $this->sendAuthJsonRequest("/users", 'POST', ($data));
         $result = $this->responseJson();
         $this->assertResponseOk();
         $this->assertArraySubset([
@@ -34,8 +34,7 @@ class RegisterTest extends IntegrationTestCase
 
     public function testNoDataReturnsValidationErrors()
     {
-        $data = [];
-        $this->sendRequest("/users", 'POST', $data);
+        $this->sendAuthJsonRequest("/users", 'POST', []);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [
@@ -55,7 +54,7 @@ class RegisterTest extends IntegrationTestCase
                 'password' => '1',
             ]
         ];
-        $this->sendRequest("/users", 'POST', $data);
+        $this->sendAuthJsonRequest("/users", 'POST', $data);
         $this->_assertStatus(422, 422, "Status invalid");
         $this->assertEquals([
             'errors' => [
@@ -75,7 +74,7 @@ class RegisterTest extends IntegrationTestCase
                 'password' => 'secret',
             ]
         ];
-        $this->sendRequest("/users", 'POST', $data);
+        $this->sendAuthJsonRequest("/users", 'POST', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [

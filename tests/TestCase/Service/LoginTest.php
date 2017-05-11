@@ -18,8 +18,7 @@ class LoginTest extends IntegrationTestCase
             ]
         ];
 
-        $this->headers = [];
-        $this->sendRequest("/users/login", 'POST', $data);
+        $this->sendJsonRequest("/users/login", 'POST', $data);
         $result = $this->responseJson();
         $this->assertResponseOk();
         $this->assertArraySubset([
@@ -40,8 +39,7 @@ class LoginTest extends IntegrationTestCase
             'user' => []
         ];
 
-        $this->headers = [];
-        $this->sendRequest("/users/login", 'POST', $data);
+        $this->sendJsonRequest("/users/login", 'POST', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [
@@ -60,8 +58,7 @@ class LoginTest extends IntegrationTestCase
             ]
         ];
 
-        $this->headers = [];
-        $this->sendRequest("/users/login", 'POST', $data);
+        $this->sendJsonRequest("/users/login", 'POST', $data);
         $this->assertStatus(422);
         $this->assertEquals([
             'errors' => [

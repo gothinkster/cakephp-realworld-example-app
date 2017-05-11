@@ -2,6 +2,7 @@
 
 namespace App\Test\TestCase;
 
+use Cake\Datasource\EntityInterface;
 use CakeDC\Api\TestSuite\IntegrationTestCase as BaseTestCase;
 use CakephpFactoryMuffin\FactoryLoader;
 
@@ -35,12 +36,40 @@ abstract class IntegrationTestCase extends BaseTestCase
     }
 
     /**
-     * @inheritdoc
+     * Send json request.
+     *
+     * @param string $url Request api url.
+     * @param string $method Request method.
+     * @param array $data Request data.
+     * @param EntityInterface $authorizeWithUser User to authorize with.
+     * @return void
      */
-    public function sendRequest($url, $method, $data = [], $userId = null)
+    public function sendAuthJsonRequest($url, $method, $data = [])
     {
-        $this->configRequest(['headers' => $this->headers]);
-        parent::sendRequest($url, $method, $data);
+        $this->sendJsonRequest($url, $method, $data, $this->loggedInUser);
+    }
+
+    /**
+     * Send json request.
+     *
+     * @param string $url Request api url.
+     * @param string $method Request method.
+     * @param array $data Request data.
+     * @param EntityInterface $authWithUser User to authorize with.
+     * @return void
+     */
+    public function sendJsonRequest($url, $method, $data = [], $authWithUser = null)
+    {
+        $headers = [];
+        if ($method != 'GET' && is_array($data)) {
+            $data = json_encode($data);
+        }
+        $headers['Content-Type'] = 'application/json';
+        if ($authWithUser !== null) {
+            $headers['Authorization'] = "Token {$authWithUser->token}";
+        }
+        $this->configRequest(['headers' => $headers]);
+        $this->sendRequest($url, $method, $data);
     }
 
     /**

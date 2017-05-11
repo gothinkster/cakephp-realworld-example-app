@@ -12,7 +12,7 @@ class ProfilesServiceTest extends IntegrationTestCase
 
     public function testValidProfile()
     {
-        $this->sendRequest("/profiles/{$this->user->username}", 'GET');
+        $this->sendAuthJsonRequest("/profiles/{$this->user->username}", 'GET');
         $this->assertResponseOk();
 
         $this->assertEquals([
@@ -27,13 +27,13 @@ class ProfilesServiceTest extends IntegrationTestCase
 
     public function testNotFoundInvalidProfile()
     {
-        $this->sendRequest("/profiles/unknown", 'GET');
+        $this->sendAuthJsonRequest("/profiles/unknown", 'GET');
         $this->assertStatus(404);
     }
 
     public function testFollowAndUnfollow()
     {
-        $this->sendRequest("/profiles/{$this->user->username}/follow", 'POST');
+        $this->sendAuthJsonRequest("/profiles/{$this->user->username}/follow", 'POST');
         $this->assertStatus(200);
         $this->assertEquals([
             'profile' => [
@@ -46,7 +46,7 @@ class ProfilesServiceTest extends IntegrationTestCase
         $Follows = TableRegistry::get('Follows');
         $this->assertTrue($Follows->following($this->loggedInUser->id, $this->user->id), 'Failed to follow user');
 
-        $this->sendRequest("/profiles/{$this->user->username}/follow", 'DELETE');
+        $this->sendAuthJsonRequest("/profiles/{$this->user->username}/follow", 'DELETE');
         $this->assertStatus(200);
         $this->assertEquals([
             'profile' => [
@@ -61,20 +61,19 @@ class ProfilesServiceTest extends IntegrationTestCase
 
     public function testFollowAndUnfollowNotExistsProfiles()
     {
-        $this->sendRequest("/profiles/unknown/follow", 'POST');
+        $this->sendAuthJsonRequest("/profiles/unknown/follow", 'POST');
         $this->assertStatus(404);
 
-        $this->sendRequest("/profiles/unknown/follow", 'DELETE');
+        $this->sendAuthJsonRequest("/profiles/unknown/follow", 'DELETE');
         $this->assertStatus(404);
     }
 
     public function testFollowAndUnfollowUnauthorized()
     {
-        $this->headers = [];
-        $this->sendRequest("/profiles/{$this->user->username}/follow", 'POST');
+        $this->sendJsonRequest("/profiles/{$this->user->username}/follow", 'POST');
         $this->assertStatus(401);
 
-        $this->sendRequest("/profiles/{$this->user->username}/follow", 'DELETE');
+        $this->sendJsonRequest("/profiles/{$this->user->username}/follow", 'DELETE');
         $this->assertStatus(401);
     }
 }

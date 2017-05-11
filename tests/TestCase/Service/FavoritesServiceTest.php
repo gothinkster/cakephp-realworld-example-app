@@ -22,46 +22,45 @@ class FavoritesServiceTest extends IntegrationTestCase
 
     public function testSuccessAddAndRemoveFavorite()
     {
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'POST');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'POST');
         $this->assertStatus(200);
         $this->assertIsFavorited();
 
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
         $this->assertStatus(200);
         $this->assertIsNotFavorited();
     }
 
     public function testFavoriteCountersIsCorrect()
     {
-        $this->sendRequest("/articles/{$this->article->slug}", 'GET');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}", 'GET');
         $this->assertStatus(200);
         $this->assertIsNotFavorited();
 
         $Articles = TableRegistry::get('Articles');
         $Articles->favorite($this->article->id, $this->user->id);
 
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'POST');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'POST');
         $this->assertStatus(200);
         $this->assertIsFavorited(2);
 
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
         $this->assertStatus(200);
         $this->assertIsNotFavorited(1);
 
         $Articles->unfavorite($this->article->id, $this->user->id);
 
-        $this->sendRequest("/articles/{$this->article->slug}", 'GET');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}", 'GET');
         $this->assertStatus(200);
         $this->assertIsNotFavorited();
     }
 
     public function testUnauthenticatedErrorIfNotLoggedIn()
     {
-        $this->headers = [];
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'POST');
+        $this->sendJsonRequest("/articles/{$this->article->slug}/favorite", 'POST');
         $this->assertStatus(401);
 
-        $this->sendRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
+        $this->sendJsonRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
         $this->assertStatus(401);
     }
 

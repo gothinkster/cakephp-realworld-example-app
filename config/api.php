@@ -38,6 +38,9 @@ return [
                                 'CakeDC/Api.Psr7'
                             ],
                         ],
+                        'Extension' => [
+                            'CakeDC/Api.Cors',
+                        ]
                     ],
                 ],
             ],

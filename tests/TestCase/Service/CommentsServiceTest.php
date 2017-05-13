@@ -95,10 +95,10 @@ class CommentsServiceTest extends IntegrationTestCase
 
     public function testDeleteNotExistsComment()
     {
-        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/999999", 'DELETE');
+        $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/b66bfa63-460f-4652-add3-c039b0620b4e", 'DELETE');
         $this->assertStatus(404);
 
-        $this->sendAuthJsonRequest("/articles/unknown/comments/999999", 'DELETE');
+        $this->sendAuthJsonRequest("/articles/unknown/comments/b66bfa63-460f-4652-add3-c039b0620b4e", 'DELETE');
         $this->assertStatus(404);
     }
 

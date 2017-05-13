@@ -1,7 +1,5 @@
 language: php
 
-dist: trusty
-
 sudo: false
 
 php:
@@ -14,6 +12,8 @@ services:
 env:
   matrix:
     - DB=mysql DATABASE_TEST_URL='mysql://root:password@127.0.0.1/cakephp_test'
+    - DB=pgsql DATABASE_TEST_URL='postgres://travis@127.0.0.1/cakephp_test'
+    - DB=sqlite DATABASE_TEST_URL='sqlite:///:memory:'
 
 matrix:
   fast_finish: true
@@ -24,7 +24,8 @@ matrix:
 
 before_script:
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS cakephp_test;'; fi"
-  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - sh -c "if [ '$DB' = 'mysql' ]; then echo \"USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n\" | mysql -u root; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi"
   - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:^3.0.0; fi
   - if [[ $PHPCS != 1 ]]; then composer install; fi
 

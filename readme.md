@@ -1,6 +1,6 @@
 # ![CakePHP RealWorld Example App](logo.png)
 
-[![Build Status](https://img.shields.io/travis/gothinkster/cakephp-realworld-example-app/master.svg)](https://travis-ci.org/gothinkster/cakephp-realworld-example-app) [![GitHub stars](https://img.shields.io/github/stars/gothinkster/cakephp-realworld-example-app.svg)](https://github.com/gothinkster/cakephp-realworld-example-app/stargazers) [![GitHub license](https://img.shields.io/github/license/gothinkster/cakephp-realworld-example-app.svg)](https://raw.githubusercontent.com/gothinkster/cakephp-realworld-example-app/master/LICENSE.txt)
+[![Build Status](https://img.shields.io/travis/gothinkster/cakephp-realworld-example-app/master.svg)](https://travis-ci.org/gothinkster/cakephp-realworld-example-app) [![GitHub stars](https://img.shields.io/github/stars/gothinkster/cakephp-realworld-example-app.svg)](https://github.com/gothinkster/cakephp-realworld-example-app/stargazers) [![GitHub license](https://img.shields.io/badge/License-MIT-green.svg)](https://raw.githubusercontent.com/gothinkster/cakephp-realworld-example-app/master/LICENSE.txt)
 
 > ### Example CakePHP codebase containing real world examples (CRUD, auth, advanced patterns and more) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
 

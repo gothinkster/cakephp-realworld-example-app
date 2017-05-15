@@ -1,4 +1,4 @@
-The MIT License
+MIT License
 
 Copyright 2009-2016
 Cake Development Corporation

@@ -76,10 +76,10 @@ For more information on how to this works with other frontends/backends, head ov
 - `config` - Contains all the application configuration files.
 - `src/Model/Entity` - Contains all cakephp ORM entites.
 - `src/Model/Table` - Contains all cakephp ORM tables.
-- `app/Service` - Contains application services that represents root api endpoints.
-- `app/Service/Action` - Contains application endpoints logic logic.
-- `app/Service/Renderer` - Contains the final api response formatter.
-- `app/config/Migrations` - Contains all the database migrations.
+- `src/Service` - Contains application services that represents root api endpoints.
+- `src/Service/Action` - Contains application endpoints logic logic.
+- `src/Service/Renderer` - Contains the final api response formatter.
+- `/config/Migrations` - Contains all the database migrations.
 
 ## Environment configuration
 

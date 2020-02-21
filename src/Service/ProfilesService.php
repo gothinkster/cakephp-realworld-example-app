@@ -51,7 +51,7 @@ class ProfilesService extends FallbackService
         $defaultOptions = $this->routerDefaultOptions();
         $defaultOptions['id'] = '[A-Za-z0-9_-]+';
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
-            $routes->extensions($this->_routeExtensions);
+            $routes->setExtensions($this->_routeExtensions);
             $routes->resources($this->getName(), $defaultOptions);
         });
     }

@@ -29,7 +29,7 @@ class UserEditAction extends CrudAction
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-        $this->setTable(TableRegistry::get('Users'));
+        $this->setTable(TableRegistry::getTableLocator()->get('Users'));
     }
 
     /**
@@ -39,15 +39,15 @@ class UserEditAction extends CrudAction
      */
     public function validates()
     {
-        $data = $this->data();
+        $data = $this->getData();
         if (!array_key_exists('user', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['user root does not exists']);
         }
         $userId = $this->Auth->user('id');
         $entity = $this->_getEntity($userId);
-        $data = Hash::get($this->data(), 'user');
+        $data = Hash::get($this->getData(), 'user');
         $entity = $this->_patchEntity($entity, $data, ['validate' => 'register']);
-        $errors = $entity->errors();
+        $errors = $entity->getErrors();
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);
         }
@@ -65,12 +65,12 @@ class UserEditAction extends CrudAction
         $userId = $this->Auth->user('id');
 
         $entity = $this->_getEntity($userId);
-        $data = Hash::get($this->data(), 'user');
+        $data = Hash::get($this->getData(), 'user');
         $entity = $this->_patchEntity($entity, $data);
 
         $record = $this->_save($entity);
         if ($record) {
-            $user = TableRegistry::get('Users')->loginFormat($this->Auth->user('id'));
+            $user = TableRegistry::getTableLocator()->get('Users')->loginFormat($this->Auth->user('id'));
 
             return ['user' => $user];
         }

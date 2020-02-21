@@ -115,7 +115,7 @@ class CommentsTable extends Table
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-                    $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
+                    $row['author'] = TableRegistry::getTableLocator()->get('Users')->getFormatted($row['author_id'], $options);
                     unset($row['author_id']);
 
                     return $row;

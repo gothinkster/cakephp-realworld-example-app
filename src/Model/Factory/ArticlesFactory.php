@@ -34,7 +34,7 @@ class ArticlesFactory extends AbstractFactory
             'created' => Faker::dateTimeBetween('-2 year', 'now'),
             'modified' => Faker::dateTimeBetween('-2 year', 'now'),
             'tagList' => function ($item) {
-                $tags = TableRegistry::get('Tags')->find()->select(['label'])
+                $tags = TableRegistry::getTableLocator()->get('Tags')->find()->select(['label'])
                     ->all()
                     ->shuffle()
                     ->take(5)

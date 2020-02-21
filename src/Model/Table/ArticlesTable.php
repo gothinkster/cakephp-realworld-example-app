@@ -189,7 +189,7 @@ class ArticlesTable extends Table
                         return $row;
                     }
                     $row = Formatter::dateFormat($row);
-                    $row['author'] = TableRegistry::get('Users')->getFormatted($row['author_id'], $options);
+                    $row['author'] = TableRegistry::getTableLocator()->get('Users')->getFormatted($row['author_id'], $options);
                     if ($row['tagList']) {
                         $tags = collection($row['tagList'])
                             ->map(function ($tag) {

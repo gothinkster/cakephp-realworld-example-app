@@ -27,7 +27,7 @@ class ProfileFollowAction extends ProfileViewAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::getTableLocator()->get('Users');
     }
 
     /**
@@ -51,7 +51,7 @@ class ProfileFollowAction extends ProfileViewAction
                ->find()
                ->where(['Users.username' => $this->_id])
                ->firstOrFail();
-        TableRegistry::get('Follows')->follow($this->Auth->user('id'), $record['id']);
+        TableRegistry::getTableLocator()->get('Follows')->follow($this->Auth->user('id'), $record['id']);
 
         return $this->_viewProfile();
     }

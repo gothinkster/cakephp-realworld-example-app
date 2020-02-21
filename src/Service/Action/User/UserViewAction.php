@@ -42,7 +42,7 @@ class UserViewAction extends Action
      */
     public function execute()
     {
-        $user = TableRegistry::get('Users')->loginFormat($this->Auth->user('id'));
+        $user = TableRegistry::getTableLocator()->get('Users')->loginFormat($this->Auth->user('id'));
         if (empty($user)) {
             throw new UserNotFoundException(__d('CakeDC/Api', 'User not found'));
         } else {

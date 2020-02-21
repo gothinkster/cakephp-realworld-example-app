@@ -23,35 +23,35 @@ class FavoritesServiceTest extends IntegrationTestCase
     public function testSuccessAddAndRemoveFavorite()
     {
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'POST');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsFavorited();
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsNotFavorited();
     }
 
     public function testFavoriteCountersIsCorrect()
     {
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsNotFavorited();
 
         $Articles = TableRegistry::get('Articles');
         $Articles->favorite($this->article->id, $this->user->id);
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'POST');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsFavorited(2);
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/favorite", 'DELETE');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsNotFavorited(1);
 
         $Articles->unfavorite($this->article->id, $this->user->id);
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertIsNotFavorited();
     }
 
@@ -71,7 +71,7 @@ class FavoritesServiceTest extends IntegrationTestCase
                 'favorited' => true,
                 'favoritesCount' => $count,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     protected function assertIsNotFavorited($count = 0)
@@ -81,6 +81,6 @@ class FavoritesServiceTest extends IntegrationTestCase
                 'favorited' => false,
                 'favoritesCount' => $count,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 }

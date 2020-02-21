@@ -23,8 +23,8 @@ class ArticleAddAction extends ArticleEditAction
      */
     public function validates()
     {
-        $validator = $this->getTable()->validator();
-        $data = $this->data();
+        $validator = $this->getTable()->getValidator();
+        $data = $this->getData();
         if (!array_key_exists('article', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['article root does not exists']);
         }

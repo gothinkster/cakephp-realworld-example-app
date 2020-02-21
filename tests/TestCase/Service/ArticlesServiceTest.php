@@ -14,28 +14,28 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testSuccessEmptyArticlesListOnFavorites()
     {
         $this->sendJsonRequest("/articles", 'GET', ['favorited' => $this->user->username]);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET', ['favorited' => "unknown"]);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testSuccessEmptyArticlesListOnTagFilter()
     {
         $this->sendJsonRequest("/articles", 'GET', ['tag' => 'tag']);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testArticlesListOnFavorites()
@@ -50,8 +50,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Articles')->favorite($articles[4]->id, $this->user->id);
 
         $this->sendJsonRequest("/articles", 'GET', ['favorited' => $this->user->username]);
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -83,18 +83,18 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testSuccessEmptyArticlesListOnAuthorFilter()
     {
         $this->sendJsonRequest("/articles", 'GET', ['author' => $this->user->username]);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET', ['author' => "unknown"]);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testArticlesListOnAuthorFilter()
@@ -106,8 +106,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         }, SORT_DESC, SORT_STRING)->toList();
 
         $this->sendJsonRequest("/articles", 'GET', ['author' => $this->user->username]);
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -139,11 +139,11 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testSuccessEmptyArticlesList()
     {
         $this->sendJsonRequest("/articles", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testArticlesList()
@@ -155,8 +155,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         }, SORT_DESC, SORT_STRING)->toList();
 
         $this->sendJsonRequest("/articles", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -187,16 +187,16 @@ class ArticlesServiceTest extends IntegrationTestCase
         $articles = FactoryLoader::seed(25, 'Articles', ['author_id' => $this->user->id]);
 
         $this->sendAuthJsonRequest("/articles", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articlesCount' => 25
         ], $response);
         $this->assertCount(20, $response['articles'], 'Expected articles to set default limit to 20');
 
         $this->sendAuthJsonRequest("/articles", 'GET', ['limit' => 10, 'offset' => 5]);
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articlesCount' => 25
         ], $response);
@@ -221,7 +221,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Articles')->favorite($article->id, $this->loggedInUser->id);
 
         $this->sendAuthJsonRequest("/articles", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -236,10 +236,10 @@ class ArticlesServiceTest extends IntegrationTestCase
                 ]
             ],
             'articlesCount' => 1
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -254,7 +254,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 ]
             ],
             'articlesCount' => 1
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testSuccessAddArticle()
@@ -268,7 +268,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         ];
 
         $this->sendAuthJsonRequest("/articles", 'POST', $data);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'article' => [
                 'slug' => 'my-article-title',
@@ -285,12 +285,12 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'following' => false,
                 ]
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
 
         $data['article']['tagList'] = ['mytag'];
 
         $this->sendAuthJsonRequest("/articles", 'POST', $data);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
                 'article' => [
                     'title' => 'my article title',
@@ -300,7 +300,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                         'username' => $this->loggedInUser->username,
                     ]
                 ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testValidationErrorsOnAddArticle()
@@ -319,7 +319,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'description' => ['This field is required'],
                 'body' => ['This field is required'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testUnauthenticatedErrorOnAddIfNotLoggedIn()
@@ -341,7 +341,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         ];
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', $data);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
                 'article' => [
                     'title' => 'new title',
@@ -349,7 +349,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'description' => 'new description',
                     'body' => 'new body message',
                 ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testValidationErrorsOnUpdateArticle()
@@ -370,7 +370,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'description' => ['This field is required'],
                 'body' => ['This field is required'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testUnauthenticatedErrorOnUpdateIfNotLoggedIn()
@@ -410,10 +410,10 @@ class ArticlesServiceTest extends IntegrationTestCase
         $article = FactoryLoader::create('Articles', ['author_id' => $this->loggedInUser->id]);
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'GET', []);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'DELETE', []);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'GET', []);
         $this->assertStatus(404);
@@ -430,7 +430,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $article = FactoryLoader::create('Articles', ['author_id' => $this->user->id]);
 
         $this->sendJsonRequest("/articles/{$article->slug}", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'article' => [
                 'title' => $article->title,
@@ -446,7 +446,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'following' => false,
                 ]
             ],
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testViewNonExistsArticle()
@@ -466,11 +466,11 @@ class ArticlesServiceTest extends IntegrationTestCase
     public function testSuccessEmptyFeed()
     {
         $this->sendAuthJsonRequest("/articles/feed", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
             'articlesCount' => 0
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testFeedReturnFollowedUserArticles()
@@ -480,8 +480,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendAuthJsonRequest("/articles/feed", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articlesCount' => 2
         ], $response);
@@ -503,16 +503,16 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendAuthJsonRequest("/articles/feed", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articlesCount' => 25
         ], $response);
         $this->assertCount(20, $response['articles'], 'Expected feed to set default limit to 20');
 
         $this->sendAuthJsonRequest("/articles/feed?limit=10&offset=5", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articlesCount' => 25
         ], $response);
@@ -536,8 +536,8 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Follows')->follow($this->loggedInUser->id, $this->user->id);
 
         $this->sendAuthJsonRequest("/articles/feed", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -555,7 +555,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         TableRegistry::get('Articles')->favorite($article->id, $this->loggedInUser->id);
 
         $this->sendAuthJsonRequest("/articles/feed", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [
                 [
@@ -568,7 +568,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                     ]
                 ],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testUnauthenticatedErrorOnFeedIfNotLoggedIn()

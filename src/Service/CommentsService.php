@@ -41,7 +41,7 @@ class CommentsService extends FallbackService
     {
         $defaultOptions = $this->routerDefaultOptions();
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
-            $routes->extensions($this->_routeExtensions);
+            $routes->setExtensions($this->_routeExtensions);
             $options = $defaultOptions;
             $routes->resources($this->getName(), $options);
         });

@@ -36,8 +36,8 @@ class AppJsonRenderer extends JsonRenderer
     public function response(Result $result = null)
     {
         $response = $this->_service->getResponse();
-        $data = $result->data();
-        $this->_service->setResponse($response->withStringBody($this->_encode($data))->withStatus($result->code())
+        $data = $result->getData();
+        $this->_service->setResponse($response->withStringBody($this->_encode($data))->withStatus($result->getCode())
             ->withType('application/json'));
 
         return true;

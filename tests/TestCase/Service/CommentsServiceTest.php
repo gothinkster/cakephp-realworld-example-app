@@ -29,7 +29,7 @@ class CommentsServiceTest extends IntegrationTestCase
         ];
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments", 'POST', $data);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->assertArraySubset([
             'comment' => [
@@ -38,14 +38,14 @@ class CommentsServiceTest extends IntegrationTestCase
                     'username' => $this->loggedInUser->username
                 ],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testRemoveExistsComment()
     {
         $comment = $this->_generateComment($this->loggedInUser->id);
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments/{$comment->id}", 'DELETE');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->assertEquals(0, TableRegistry::get('Comments')->find()->where(['article_id' => $this->article->id])->count());
     }
@@ -57,8 +57,8 @@ class CommentsServiceTest extends IntegrationTestCase
             'article_id' => $this->article->id,
         ]);
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments", 'GET');
-        $this->assertStatus(200);
-        $response = $this->responseJson();
+        $this->assertResponseSuccess();
+        $response = $this->getJsonResponse();
 
         $comments = collection($comments)->sortBy(function ($comment) {
             return $comment->created->format('Y-m-d H:i:s');

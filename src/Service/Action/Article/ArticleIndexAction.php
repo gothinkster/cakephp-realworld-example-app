@@ -35,7 +35,7 @@ class ArticleIndexAction extends ArticleIndexBase
      */
     protected function _getQuery()
     {
-        $options = $this->data();
+        $options = $this->getData();
         $user = $this->Auth->identify();
         if ($user) {
             $options['currentUser'] = $user['id'];

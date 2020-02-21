@@ -115,9 +115,10 @@ class User extends Entity
     {
         $content = [
             'id' => $this->get('id'),
+            'sub' => $this->get('id'),
             'exp' => time() + 60 * DAY
         ];
-        return JWT::encode($content, Security::salt());
+        return JWT::encode($content, Security::getSalt());
     }
 // @codingStandardsIgnoreEnd
 }

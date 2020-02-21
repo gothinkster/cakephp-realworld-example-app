@@ -19,7 +19,7 @@ class LoginTest extends IntegrationTestCase
         ];
 
         $this->sendJsonRequest("/users/login", 'POST', $data);
-        $result = $this->responseJson();
+        $result = $this->getJsonResponse();
         $this->assertResponseOk();
         $this->assertArraySubset([
             'user' => [
@@ -46,7 +46,7 @@ class LoginTest extends IntegrationTestCase
                 'email' => ['This field is required'],
                 'password' => ['This field is required'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testPreciseValidationErrors()
@@ -64,6 +64,6 @@ class LoginTest extends IntegrationTestCase
             'errors' => [
                 'email' => ['This field must be a valid email address.'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 }

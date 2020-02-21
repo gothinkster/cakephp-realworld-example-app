@@ -72,7 +72,7 @@ class AppPaginateExtension extends Extension implements EventListenerInterface
      */
     protected function _offset(Action $action)
     {
-        $data = $action->data();
+        $data = $action->getData();
         $offsetField = $this->getConfig('offsetField');
         if (!empty($data[$offsetField]) && is_numeric($data[$offsetField])) {
             return (int)$data[$offsetField];
@@ -89,7 +89,7 @@ class AppPaginateExtension extends Extension implements EventListenerInterface
      */
     protected function _limit(Action $action)
     {
-        $data = $action->data();
+        $data = $action->getData();
         $limitField = $this->getConfig('limitField');
         $maxLimit = $action->getConfig($limitField);
         if (empty($maxLimit)) {
@@ -114,7 +114,7 @@ class AppPaginateExtension extends Extension implements EventListenerInterface
     {
         $action = $event->getSubject();
         $query = $event->getData('query');
-        $result = $action->service()->result();
+        $result = $action->getService()->getResult();
         $count = $query->count();
         $limit = $this->_limit($action);
         $pagination = [
@@ -123,6 +123,6 @@ class AppPaginateExtension extends Extension implements EventListenerInterface
             'pages' => ceil($count / $limit),
             'count' => $count
         ];
-        $result->setPayload('pagination', $pagination);
+        $result->appendPayload('pagination', $pagination);
     }
 }

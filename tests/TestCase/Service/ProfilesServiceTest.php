@@ -22,7 +22,7 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'image' => $this->user->image,
                 'following' => false,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testNotFoundInvalidProfile()
@@ -34,7 +34,7 @@ class ProfilesServiceTest extends IntegrationTestCase
     public function testFollowAndUnfollow()
     {
         $this->sendAuthJsonRequest("/profiles/{$this->user->username}/follow", 'POST');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertEquals([
             'profile' => [
                 'username' => $this->user->username,
@@ -42,12 +42,12 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'image' => $this->user->image,
                 'following' => true,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
         $Follows = TableRegistry::get('Follows');
         $this->assertTrue($Follows->following($this->loggedInUser->id, $this->user->id), 'Failed to follow user');
 
         $this->sendAuthJsonRequest("/profiles/{$this->user->username}/follow", 'DELETE');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertEquals([
             'profile' => [
                 'username' => $this->user->username,
@@ -55,7 +55,7 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'image' => $this->user->image,
                 'following' => false,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
         $this->assertFalse($Follows->following($this->loggedInUser->id, $this->user->id), 'Failed to unfollow user');
     }
 

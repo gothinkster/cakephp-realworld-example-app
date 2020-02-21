@@ -25,8 +25,8 @@ class CommentAddAction extends ChildArticleAction
      */
     public function validates()
     {
-        $validator = $this->getTable()->validator();
-        $data = $this->data();
+        $validator = $this->getTable()->getValidator();
+        $data = $this->getData();
         if (!array_key_exists('comment', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['comment root does not exists']);
         }
@@ -46,7 +46,7 @@ class CommentAddAction extends ChildArticleAction
     public function execute()
     {
         $entity = $this->_newEntity();
-        $data = Hash::get($this->data(), 'comment');
+        $data = Hash::get($this->getData(), 'comment');
         $data['author_id'] = $this->Auth->user('id');
         $data['article_id'] = $this->_parentId;
         $entity = $this->_patchEntity($entity, $data);

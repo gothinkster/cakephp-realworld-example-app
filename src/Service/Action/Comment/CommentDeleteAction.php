@@ -12,7 +12,7 @@
 namespace App\Service\Action\Comment;
 
 use App\Service\Action\ChildArticleAction;
-use Cake\Network\Exception\ForbiddenException;
+use Cake\Http\Exception\ForbiddenException;
 
 class CommentDeleteAction extends ChildArticleAction
 {

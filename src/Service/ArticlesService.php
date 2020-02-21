@@ -68,10 +68,10 @@ class ArticlesService extends FallbackService
         $defaultOptions = $this->routerDefaultOptions();
         $defaultOptions['id'] = '[a-z0-9_-]+';
         ApiRouter::scope('/', $defaultOptions, function (RouteBuilder $routes) use ($defaultOptions) {
-            $routes->extensions($this->_routeExtensions);
+            $routes->setExtensions($this->_routeExtensions);
             $routes->resources($this->getName(), $defaultOptions, function ($routes) {
                 if (is_array($this->_routeExtensions)) {
-                    $routes->extensions($this->_routeExtensions);
+                    $routes->setExtensions($this->_routeExtensions);
                      $routes->resources('Comments');
                 }
             });

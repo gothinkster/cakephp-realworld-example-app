@@ -30,7 +30,7 @@ class RegisterAction extends CrudAction
     {
         parent::__construct($config);
         $this->Auth->allow($this->getName());
-        $this->setTable(TableRegistry::get('Users'));
+        $this->setTable(TableRegistry::getTableLocator()->get('Users'));
     }
 
     /**
@@ -40,12 +40,12 @@ class RegisterAction extends CrudAction
      */
     public function validates()
     {
-        $validator = $this->getTable()->validator('register');
-        $data = $this->data();
+        $validator = $this->getTable()->getValidator('register');
+        $data = $this->getData();
         if (!array_key_exists('user', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['user root does not exists']);
         }
-        $data = Hash::get($this->data(), 'user');
+        $data = Hash::get($this->getData(), 'user');
         $errors = $validator->errors($data);
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);
@@ -62,7 +62,7 @@ class RegisterAction extends CrudAction
     public function execute()
     {
         $entity = $this->_newEntity();
-        $data = Hash::get($this->data(), 'user');
+        $data = Hash::get($this->getData(), 'user');
         $entity = $this->_patchEntity($entity, $data, [
             'validate' => 'register'
         ]);
@@ -80,9 +80,9 @@ class RegisterAction extends CrudAction
      *
      * @return mixed
      */
-    public function data()
+    public function getData()
     {
-        $data = parent::data();
+        $data = parent::getData();
         $data['user']['active'] = true;
         $data['user']['is_superuser'] = false;
         $data['user']['role'] = 'user';

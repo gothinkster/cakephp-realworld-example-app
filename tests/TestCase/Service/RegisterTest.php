@@ -19,7 +19,7 @@ class RegisterTest extends IntegrationTestCase
             ]
         ];
         $this->sendAuthJsonRequest("/users", 'POST', ($data));
-        $result = $this->responseJson();
+        $result = $this->getJsonResponse();
         $this->assertResponseOk();
         $this->assertArraySubset([
             'user' => [
@@ -42,7 +42,7 @@ class RegisterTest extends IntegrationTestCase
                 'email' => ['This field is required'],
                 'password' => ['This field is required'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testPreciseValidationErrors()
@@ -55,14 +55,14 @@ class RegisterTest extends IntegrationTestCase
             ]
         ];
         $this->sendAuthJsonRequest("/users", 'POST', $data);
-        $this->_assertStatus(422, 422, "Status invalid");
+        $this->assertStatus(422, "Status invalid");
         $this->assertEquals([
             'errors' => [
                 'username' => ['Username may only contain letters and numbers.'],
                 'email' => ['This field must be a valid email address.'],
                 'password' => ['Password must be at least 6 characters.'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testDuplicationValidationErrors()
@@ -81,6 +81,6 @@ class RegisterTest extends IntegrationTestCase
                 'username' => ['Username has already been taken.'],
                 'email' => ['Email has already been taken.'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 }

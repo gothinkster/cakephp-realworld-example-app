@@ -27,7 +27,7 @@ class ProfileUnfollowAction extends ProfileViewAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::getTableLocator()->get('Users');
     }
 
     /**
@@ -53,7 +53,7 @@ class ProfileUnfollowAction extends ProfileViewAction
            ->firstOrFail();
 
         if ($record) {
-            $Follows = TableRegistry::get('Follows');
+            $Follows = TableRegistry::getTableLocator()->get('Follows');
             $current = $Follows->find()->where([
                 'follower_id' => $this->Auth->user('id'),
                 'followable_id' => $record['id'],
@@ -62,7 +62,7 @@ class ProfileUnfollowAction extends ProfileViewAction
                 $Follows->delete($current);
             }
         }
-        TableRegistry::get('Follows')->unfollow($this->Auth->user('id'), $record['id']);
+        TableRegistry::getTableLocator()->get('Follows')->unfollow($this->Auth->user('id'), $record['id']);
 
         return $this->_viewProfile();
     }

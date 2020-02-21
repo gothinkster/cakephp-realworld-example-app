@@ -9,10 +9,10 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace App\Authenticator;
+namespace App\Authentication\Authenticator;
 
 use Authentication\Authenticator\FormAuthenticator;
-use Authentication\Result;
+use Authentication\Authenticator\Result;
 use Cake\Utility\Hash;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,42 +26,17 @@ class AppFormAuthenticator extends FormAuthenticator
 {
 
     /**
-     * Checks the fields to ensure they are supplied.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
-     * @param array $fields The fields to be checked.
-     * @return bool False if the fields have not been supplied. True if they exist.
-     */
-    protected function _checkBody(ServerRequestInterface $request, array $fields)
-    {
-        $body = Hash::get($request->getParsedBody(), $this->getConfig('baseModel'));
-
-        foreach ([$fields['username'], $fields['password']] as $field) {
-            if (!isset($body[$field])) {
-                return false;
-            }
-
-            $value = $body[$field];
-            if (empty($value) || !is_string($value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Authenticates the identity contained in a request. Will use the `config.userModel`, and `config.fields`
      * to find POST data that is used to find a matching record in the `config.userModel`. Will return false if
      * there is no post data, either username or password is missing, or if the scope conditions have not been met.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
      * @param \Psr\Http\Message\ResponseInterface $response Unused response object.
-     * @return \Authentication\ResultInterface
+     * @return \Authentication\Authenticator\ResultInterface
      */
     public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
     {
-        if (!$this->_checkLoginUrl($request)) {
+        if (!$this->_checkUrl($request)) {
             $errors = [
                 sprintf(
                     'Login URL %s did not match %s',
@@ -70,23 +45,51 @@ class AppFormAuthenticator extends FormAuthenticator
                 )
             ];
 
-            return new Result(null, Result::FAILURE_OTHER, $errors);
+            return new Result(null, Result::FAILURE_CREDENTIALS_INVALID, $errors);
         }
 
-        $fields = $this->_config['fields'];
-        if (!$this->_checkBody($request, $fields)) {
-            return new Result(null, Result::FAILURE_CREDENTIALS_NOT_FOUND, [
-                'Login credentials not found'
+        $data = $this->_getData($request);
+        if ($data === null) {
+            return new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
+                'Login credentials not found',
             ]);
         }
 
-        $body = Hash::get($request->getParsedBody(), $this->getConfig('baseModel'));
-        $user = $this->identifiers()->identify($body);
+        $user = $this->getIdentifier()->identify($data);
 
         if (empty($user)) {
-            return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND, $this->identifiers()->getErrors());
+            return new Result(null, Result::FAILURE_CREDENTIALS_MISSING, $this->getIdentifier()->getErrors());
         }
 
         return new Result($user, Result::SUCCESS);
     }
+
+    /**
+     * Checks the fields to ensure they are supplied.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
+     * @return array|null Username and password retrieved from a request body.
+     */
+    protected function _getData(ServerRequestInterface $request)
+    {
+        $fields = $this->_config['fields'];
+        $body = Hash::get($request->getParsedBody(), $this->getConfig('baseModel'));
+
+        $data = [];
+        foreach ($fields as $key => $field) {
+            if (!isset($body[$field])) {
+                return null;
+            }
+
+            $value = $body[$field];
+            if (!is_string($value) || !strlen($value)) {
+                return null;
+            }
+
+            $data[$key] = $value;
+        }
+
+        return $data;
+    }
+
 }

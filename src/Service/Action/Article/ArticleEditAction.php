@@ -12,7 +12,7 @@
 namespace App\Service\Action\Article;
 
 use CakeDC\Api\Exception\ValidationException;
-use Cake\Network\Exception\ForbiddenException;
+use Cake\Http\Exception\ForbiddenException;
 use Cake\Utility\Hash;
 
 class ArticleEditAction extends ArticleViewAction
@@ -27,7 +27,7 @@ class ArticleEditAction extends ArticleViewAction
      */
     public function validates()
     {
-        $data = $this->data();
+        $data = $this->getData();
         if (!array_key_exists('article', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['article root does not exists']);
         }
@@ -39,7 +39,7 @@ class ArticleEditAction extends ArticleViewAction
             throw new ForbiddenException();
         }
 
-        $errors = $entity->errors();
+        $errors = $entity->getErrors();
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);
         }
@@ -91,7 +91,7 @@ class ArticleEditAction extends ArticleViewAction
      */
     protected function _articleData()
     {
-        $data = Hash::get($this->data(), 'article');
+        $data = Hash::get($this->getData(), 'article');
         unset($data['author']);
         if (!empty($data['tagList']) && is_array($data['tagList'])) {
             $data['tagList'] = join(' ', $data['tagList']);

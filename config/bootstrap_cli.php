@@ -26,10 +26,3 @@ use Cake\Core\Plugin;
 Configure::write('Log.debug.file', 'cli-debug');
 Configure::write('Log.error.file', 'cli-error');
 
-try {
-    Plugin::load('Bake');
-} catch (MissingPluginException $e) {
-    // Do not halt if the plugin is missing
-}
-
-Plugin::load('Migrations');

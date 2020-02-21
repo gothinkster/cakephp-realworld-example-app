@@ -25,13 +25,13 @@ trait FixturesTrait
      * @var array
      */
     public $fixtures = [
-        'app.articles',
-        'app.comments',
-        'app.favorites',
-        'app.follows',
-        'app.users',
-        'app.social_accounts',
-        'app.tagged',
-        'app.tags',
+        'app.Articles',
+        'app.Comments',
+        'app.Favorites',
+        'app.Follows',
+        'app.Users',
+        'app.SocialAccounts',
+        'app.Tagged',
+        'app.Tags',
     ];
 }

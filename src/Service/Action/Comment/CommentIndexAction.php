@@ -42,7 +42,7 @@ class CommentIndexAction extends ChildArticleAction
     {
         $entities = $this->_getEntities()->toArray();
 
-        $pagination = $this->service()->getResult()->payload('pagination');
+        $pagination = $this->getService()->getResult()->getPayload('pagination');
 
         return [
             'comments' => $entities,
@@ -57,7 +57,7 @@ class CommentIndexAction extends ChildArticleAction
      */
     protected function _getEntities()
     {
-        $options = $this->data();
+        $options = $this->getData();
         $user = $this->Auth->identify();
         if ($user) {
             $options['currentUser'] = $user['id'];

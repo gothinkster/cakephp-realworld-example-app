@@ -12,7 +12,7 @@ class UserServiceTest extends IntegrationTestCase
     public function testValidUserIfLogged()
     {
         $this->sendAuthJsonRequest("/user", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->assertArraySubset([
             'user' => [
@@ -21,7 +21,7 @@ class UserServiceTest extends IntegrationTestCase
                 'bio' => $this->loggedInUser->bio,
                 'image' => $this->loggedInUser->image,
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testUnauthorizedIdNotLoggedIn()
@@ -42,7 +42,7 @@ class UserServiceTest extends IntegrationTestCase
             ]
         ];
         $this->sendAuthJsonRequest("/user", 'PUT', $data);
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
 
         $this->assertArraySubset([
             'user' => [
@@ -51,10 +51,10 @@ class UserServiceTest extends IntegrationTestCase
                 'bio' => 'hello',
                 'image' => 'http://image.com/user.jpg',
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
 
         $this->sendAuthJsonRequest("/user", 'GET');
-        $this->assertStatus(200);
+        $this->assertResponseSuccess();
         $this->assertArraySubset([
             'user' => [
                 'username' => 'user123',
@@ -62,7 +62,7 @@ class UserServiceTest extends IntegrationTestCase
                 'bio' => 'hello',
                 'image' => 'http://image.com/user.jpg',
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testValidationErrorsOnUpdate()
@@ -87,7 +87,7 @@ class UserServiceTest extends IntegrationTestCase
                 'image' => ['Invalid url'],
                 'username' => ['Username may only contain letters and numbers.'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 
     public function testValidationErrorsOnUpdateToExistsUsernameOrEmail()
@@ -107,6 +107,6 @@ class UserServiceTest extends IntegrationTestCase
                 'username' => ['Username has already been taken.'],
                 'email' => ['Email has already been taken.'],
             ]
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 }

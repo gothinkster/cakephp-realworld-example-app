@@ -54,12 +54,12 @@ class LoginAction extends Action
      */
     public function validates()
     {
-        $validator = TableRegistry::get('Users')->validator();
-        $data = $this->data();
+        $validator = TableRegistry::getTableLocator()->get('Users')->getValidator();
+        $data = $this->getData();
         if (!array_key_exists('user', $data)) {
             throw new ValidationException(__('Validation failed'), 0, null, ['user root does not exists']);
         }
-        $data = Hash::get($this->data(), 'user');
+        $data = Hash::get($this->getData(), 'user');
         $errors = $validator->errors($data);
         if (!empty($errors)) {
             throw new ValidationException(__('Validation failed'), 0, null, $errors);
@@ -79,7 +79,7 @@ class LoginAction extends Action
         if (!empty($user)) {
             $this->Auth->setUser($user);
             $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-            $user = TableRegistry::get('Users')->loginFormat($user['id']);
+            $user = TableRegistry::getTableLocator()->get('Users')->loginFormat($user['id']);
         } else {
             throw new UserNotFoundException(__d('CakeDC/Api', 'User not found'));
         }

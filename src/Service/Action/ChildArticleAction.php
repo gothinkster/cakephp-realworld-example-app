@@ -28,7 +28,7 @@ abstract class ChildArticleAction extends CrudAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $article = TableRegistry::get('Articles')->find()->where(['slug' => $this->_parentId])->firstOrFail();
+        $article = TableRegistry::getTableLocator()->get('Articles')->find()->where(['slug' => $this->_parentId])->firstOrFail();
         if ($article) {
             $this->_parentId = $article->id;
         }

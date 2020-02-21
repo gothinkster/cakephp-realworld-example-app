@@ -11,7 +11,7 @@
 
 namespace App\Service\Action\Article;
 
-use Cake\Network\Exception\ForbiddenException;
+use Cake\Http\Exception\ForbiddenException;
 
 class ArticleDeleteAction extends ArticleViewAction
 {

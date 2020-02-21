@@ -16,7 +16,7 @@ class TagsServiceTest extends IntegrationTestCase
         $tags = FactoryLoader::seed(5, 'Tags');
         $this->sendJsonRequest("/tags", 'GET');
         $this->assertResponseOk();
-        $response = $this->responseJson();
+        $response = $this->getJsonResponse();
         sort($response['tags']);
         $expected = Hash::extract($tags, '{n}.label');
         sort($expected);
@@ -31,6 +31,6 @@ class TagsServiceTest extends IntegrationTestCase
         $this->assertResponseOk();
         $this->assertEquals([
             'tags' => []
-        ], $this->responseJson());
+        ], $this->getJsonResponse());
     }
 }

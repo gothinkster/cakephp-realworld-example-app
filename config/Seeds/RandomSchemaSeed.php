@@ -1,6 +1,7 @@
 <?php
 // @codingStandardsIgnoreStart
 
+use Cake\ORM\TableRegistry;
 use CakephpFactoryMuffin\FactoryLoader;
 use Migrations\AbstractSeed;
 
@@ -93,10 +94,10 @@ class RandomSchemaSeed extends AbstractSeed
             });
         });
 
-        $articles = \Cake\ORM\TableRegistry::get('Articles')->find()->select(['id'])->all();
+        $articles = TableRegistry::getTableLocator()->get('Articles')->find()->select(['id'])->all();
 
         $favoritesCount = count($users) * $this->usersWithFavoritesRatio;
-        $Favorites = \Cake\ORM\TableRegistry::get('Favorites');
+        $Favorites = TableRegistry::getTableLocator()->get('Favorites');
         for ($i = 1; $i < $favoritesCount; $i++) {
             $user = $users[$i];
             $articles->shuffle()->take(rand(1, floor($articles->count() / 2)))->each(

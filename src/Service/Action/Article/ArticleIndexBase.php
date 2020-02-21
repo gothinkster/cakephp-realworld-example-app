@@ -34,7 +34,7 @@ class ArticleIndexBase extends CrudAction
     public function execute()
     {
         $entities = $this->_getEntities();
-        $pagination = $this->service()->getResult()->payload('pagination');
+        $pagination = $this->getService()->getResult()->getPayload('pagination');
 
         return [
             'articles' => $entities,
@@ -50,8 +50,10 @@ class ArticleIndexBase extends CrudAction
     protected function _getEntities()
     {
         $query = $this->_getQuery();
+        // debug($query);
 
         $event = $this->dispatchEvent('Action.Crud.onFindEntities', compact('query'));
+        // debug($event);
         if ($event->result) {
             $query = $event->result;
         }

@@ -30,7 +30,7 @@ class ProfileViewAction extends CrudAction
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->_table = TableRegistry::get('Users');
+        $this->_table = TableRegistry::getTableLocator()->get('Users');
         if ($this->isPublic) {
             $this->Auth->allow($this->getName());
         }

@@ -9,7 +9,13 @@ php:
   - 7.4
 
 services:
+  - postgresql
   - mysql
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
 
 env:
   matrix:
@@ -17,12 +23,15 @@ env:
     - DB=pgsql db_dsn='postgres://postgres@127.0.0.1/cakephp_test'
     - DB=sqlite db_dsn='sqlite:///:memory:'
 
+  global:
+    - DEFAULT=1
+
 matrix:
   fast_finish: true
 
   include:
     - php: 7.3
-      env: PHPCS=1
+      env: PHPCS=1 DEFAULT=0
 
 before_script:
   - composer self-update

@@ -55,8 +55,8 @@ class AppJsonRenderer extends JsonRenderer
         $data = [
             'error' => [
                 'code' => $exception->getCode(),
-                'message' => $this->_buildMessage($exception)
-            ]
+                'message' => $this->_buildMessage($exception),
+            ],
         ];
         if ($exception instanceof ValidationException) {
             $data['errors'] = [];
@@ -72,7 +72,6 @@ class AppJsonRenderer extends JsonRenderer
         $this->_service->setResponse($response
             ->withStringBody($this->_encode($data))
             ->withType('application/json')
-            ->withStatus($exception->getCode())
-        );
+            ->withStatus($exception->getCode()));
     }
 }

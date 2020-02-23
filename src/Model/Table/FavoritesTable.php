@@ -51,16 +51,16 @@ class FavoritesTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('CounterCache', [
-            'Articles' => ['favorites_count']
+            'Articles' => ['favorites_count'],
         ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Articles', [
             'foreignKey' => 'article_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

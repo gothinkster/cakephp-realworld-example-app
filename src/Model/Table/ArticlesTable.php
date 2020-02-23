@@ -69,7 +69,7 @@ class ArticlesTable extends Table
         $this->belongsTo('Authors', [
             'className' => 'Users',
             'foreignKey' => 'author_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->hasMany('Comments', [
             'foreignKey' => 'article_id',
@@ -168,8 +168,8 @@ class ArticlesTable extends Table
                         'OR' => [
                             ['Favorites.user_id' => $options['currentUser']],
                             ['Favorites.user_id IS' => null],
-                        ]
-                    ]
+                        ],
+                    ],
                 ])
                 ->select('Favorites.id');
         }

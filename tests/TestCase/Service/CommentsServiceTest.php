@@ -24,8 +24,8 @@ class CommentsServiceTest extends IntegrationTestCase
     {
         $data = [
             'comment' => [
-                'body' => 'This is a comment'
-            ]
+                'body' => 'This is a comment',
+            ],
         ];
 
         $this->sendAuthJsonRequest("/articles/{$this->article->slug}/comments", 'POST', $data);
@@ -35,9 +35,9 @@ class CommentsServiceTest extends IntegrationTestCase
             'comment' => [
                 'body' => 'This is a comment',
                 'author' => [
-                    'username' => $this->loggedInUser->username
+                    'username' => $this->loggedInUser->username,
                 ],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -70,17 +70,17 @@ class CommentsServiceTest extends IntegrationTestCase
                     'id' => $comments[0]['id'],
                     'body' => $comments[0]['body'],
                     'author' => [
-                        'username' => $this->user->username
+                        'username' => $this->user->username,
                     ],
                 ],
                 [
                     'id' => $comments[1]['id'],
                     'body' => $comments[1]['body'],
                     'author' => [
-                        'username' => $this->user->username
+                        'username' => $this->user->username,
                     ],
                 ],
-            ]
+            ],
         ], $response);
     }
 

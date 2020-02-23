@@ -18,7 +18,7 @@ class CommentIndexAction extends ChildArticleAction
 {
 
     public $extensions = [
-        'AppPaginate'
+        'AppPaginate',
     ];
 
     /**

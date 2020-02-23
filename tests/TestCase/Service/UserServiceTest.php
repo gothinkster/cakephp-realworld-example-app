@@ -20,7 +20,7 @@ class UserServiceTest extends IntegrationTestCase
                 'username' => $this->loggedInUser->username,
                 'bio' => $this->loggedInUser->bio,
                 'image' => $this->loggedInUser->image,
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -39,7 +39,7 @@ class UserServiceTest extends IntegrationTestCase
                 'password' => 'secretpassword',
                 'bio' => 'hello',
                 'image' => 'http://image.com/user.jpg',
-            ]
+            ],
         ];
         $this->sendAuthJsonRequest("/user", 'PUT', $data);
         $this->assertResponseSuccess();
@@ -50,7 +50,7 @@ class UserServiceTest extends IntegrationTestCase
                 'email' => 'user123@world.com',
                 'bio' => 'hello',
                 'image' => 'http://image.com/user.jpg',
-            ]
+            ],
         ], $this->getJsonResponse());
 
         $this->sendAuthJsonRequest("/user", 'GET');
@@ -61,7 +61,7 @@ class UserServiceTest extends IntegrationTestCase
                 'email' => 'user123@world.com',
                 'bio' => 'hello',
                 'image' => 'http://image.com/user.jpg',
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -74,7 +74,7 @@ class UserServiceTest extends IntegrationTestCase
                 'password' => '1',
                 'bio' => 'bio data',
                 'image' => 'invalid url',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/user", 'PUT', $data);
@@ -86,7 +86,7 @@ class UserServiceTest extends IntegrationTestCase
                 'password' => ['Password must be at least 6 characters.'],
                 'image' => ['Invalid url'],
                 'username' => ['Username may only contain letters and numbers.'],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -97,7 +97,7 @@ class UserServiceTest extends IntegrationTestCase
                 'username' => $this->user->username,
                 'email' => $this->user->email,
                 'password' => 'passwd',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/user", 'PUT', $data);
@@ -106,7 +106,7 @@ class UserServiceTest extends IntegrationTestCase
             'errors' => [
                 'username' => ['Username has already been taken.'],
                 'email' => ['Email has already been taken.'],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 }

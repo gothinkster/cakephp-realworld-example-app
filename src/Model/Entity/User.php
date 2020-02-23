@@ -54,7 +54,7 @@ class User extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'id' => false,
     ];
 
     /**
@@ -64,7 +64,7 @@ class User extends Entity
      */
     protected $_hidden = [
         'password',
-        'token'
+        'token',
     ];
 
     /**
@@ -102,14 +102,14 @@ class User extends Entity
             $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
         }
 
-        return new $passwordHasher;
+        return new $passwordHasher();
     }
 
-    /**
-     * Builds jwt token.
-     *
-     * @return string
-     */
+/**
+ * Builds jwt token.
+ *
+ * @return string
+ */
 // @codingStandardsIgnoreStart
     public function _getToken()
     {

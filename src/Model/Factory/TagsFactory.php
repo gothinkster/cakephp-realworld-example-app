@@ -19,7 +19,7 @@ class TagsFactory extends AbstractFactory
             'label' => Faker::unique()->word(),
             'tag_key' => function ($item) {
                 return $item['label'];
-            }
+            },
         ];
     }
 }

@@ -56,7 +56,7 @@ class ProfileViewAction extends CrudAction
         $user = $this->Auth->identify();
         if ($user) {
             $options = [
-                'currentUser' => $user['id']
+                'currentUser' => $user['id'],
             ];
         } else {
             $options = [];

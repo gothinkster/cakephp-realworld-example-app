@@ -46,7 +46,7 @@ class ArticlesFactory extends AbstractFactory
                     });
 
                 return $tags;
-            }
+            },
         ];
     }
 }

@@ -21,7 +21,7 @@ class TagsServiceTest extends IntegrationTestCase
         $expected = Hash::extract($tags, '{n}.label');
         sort($expected);
         $this->assertEquals([
-            'tags' => $expected
+            'tags' => $expected,
         ], $response);
     }
 
@@ -30,7 +30,7 @@ class TagsServiceTest extends IntegrationTestCase
         $this->sendJsonRequest("/tags", 'GET');
         $this->assertResponseOk();
         $this->assertEquals([
-            'tags' => []
+            'tags' => [],
         ], $this->getJsonResponse());
     }
 }

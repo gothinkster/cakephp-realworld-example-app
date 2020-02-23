@@ -17,14 +17,14 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET', ['favorited' => "unknown"]);
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
     }
 
@@ -34,7 +34,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
     }
 
@@ -58,25 +58,25 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'slug' => $articles[0]->slug,
                     'title' => $articles[0]->title,
                     'author' => [
-                        'username' => $this->loggedInUser->username
-                    ]
+                        'username' => $this->loggedInUser->username,
+                    ],
                 ],
                 [
                     'slug' => $articles[2]->slug,
                     'title' => $articles[2]->title,
                     'author' => [
-                        'username' => $this->loggedInUser->username
-                    ]
+                        'username' => $this->loggedInUser->username,
+                    ],
                 ],
                 [
                     'slug' => $articles[4]->slug,
                     'title' => $articles[4]->title,
                     'author' => [
-                        'username' => $this->loggedInUser->username
-                    ]
+                        'username' => $this->loggedInUser->username,
+                    ],
                 ],
             ],
-            'articlesCount' => 3
+            'articlesCount' => 3,
         ], $response);
     }
 
@@ -86,14 +86,14 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET', ['author' => "unknown"]);
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
     }
 
@@ -114,25 +114,25 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'slug' => $articles[0]->slug,
                     'title' => $articles[0]->title,
                     'author' => [
-                        'username' => $this->user->username
-                    ]
+                        'username' => $this->user->username,
+                    ],
                 ],
                 [
                     'slug' => $articles[1]->slug,
                     'title' => $articles[1]->title,
                     'author' => [
-                        'username' => $this->user->username
-                    ]
+                        'username' => $this->user->username,
+                    ],
                 ],
                 [
                     'slug' => $articles[2]->slug,
                     'title' => $articles[2]->title,
                     'author' => [
-                        'username' => $this->user->username
-                    ]
+                        'username' => $this->user->username,
+                    ],
                 ],
             ],
-            'articlesCount' => 3
+            'articlesCount' => 3,
         ], $response);
     }
 
@@ -142,7 +142,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
     }
 
@@ -171,14 +171,14 @@ class ArticlesServiceTest extends IntegrationTestCase
                         'bio' => $this->user->bio,
                         'image' => $this->user->image,
                         'following' => false,
-                    ]
+                    ],
                 ],
                 [
                     'title' => $articles[1]->title,
                     'slug' => $articles[1]->slug,
-                ]
+                ],
             ],
-            'articlesCount' => 2
+            'articlesCount' => 2,
         ], $response);
     }
 
@@ -190,7 +190,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $response = $this->getJsonResponse();
         $this->assertArraySubset([
-            'articlesCount' => 25
+            'articlesCount' => 25,
         ], $response);
         $this->assertCount(20, $response['articles'], 'Expected articles to set default limit to 20');
 
@@ -198,7 +198,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $response = $this->getJsonResponse();
         $this->assertArraySubset([
-            'articlesCount' => 25
+            'articlesCount' => 25,
         ], $response);
         $this->assertCount(10, $response['articles'], 'Expected articles to set limit to 10');
         $articles = TableRegistry::get('Articles')->find()
@@ -232,10 +232,10 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'author' => [
                         'username' => $this->user->username,
                         'following' => true,
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'articlesCount' => 1
+            'articlesCount' => 1,
         ], $this->getJsonResponse());
 
         $this->sendJsonRequest("/articles", 'GET');
@@ -250,10 +250,10 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'author' => [
                         'username' => $this->user->username,
                         'following' => false,
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'articlesCount' => 1
+            'articlesCount' => 1,
         ], $this->getJsonResponse());
     }
 
@@ -264,7 +264,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'title' => 'my article title',
                 'description' => 'article description',
                 'body' => 'article body text',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/articles", 'POST', $data);
@@ -283,8 +283,8 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'bio' => $this->loggedInUser->bio,
                     'image' => $this->loggedInUser->image,
                     'following' => false,
-                ]
-            ]
+                ],
+            ],
         ], $this->getJsonResponse());
 
         $data['article']['tagList'] = ['mytag'];
@@ -298,8 +298,8 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'tagList' => ['mytag'],
                     'author' => [
                         'username' => $this->loggedInUser->username,
-                    ]
-                ]
+                    ],
+                ],
         ], $this->getJsonResponse());
     }
 
@@ -308,7 +308,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $data = [
             'article' => [
                 'title' => '',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/articles", 'POST', $data);
@@ -318,7 +318,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'title' => ['This field cannot be left empty'],
                 'description' => ['This field is required'],
                 'body' => ['This field is required'],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -337,7 +337,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'title' => 'new title',
                 'description' => 'new description',
                 'body' => 'new body message',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', $data);
@@ -348,7 +348,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'slug' => $article->slug,
                     'description' => 'new description',
                     'body' => 'new body message',
-                ]
+                ],
         ], $this->getJsonResponse());
     }
 
@@ -359,7 +359,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $data = [
             'article' => [
                 'title' => '',
-            ]
+            ],
         ];
 
         $this->sendAuthJsonRequest("/articles/{$article->slug}", 'PUT', $data);
@@ -369,7 +369,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                 'title' => ['This field cannot be left empty'],
                 'description' => ['This field is required'],
                 'body' => ['This field is required'],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -444,7 +444,7 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'bio' => $this->user->bio,
                     'image' => $this->user->image,
                     'following' => false,
-                ]
+                ],
             ],
         ], $this->getJsonResponse());
     }
@@ -469,7 +469,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $this->assertArraySubset([
             'articles' => [],
-            'articlesCount' => 0
+            'articlesCount' => 0,
         ], $this->getJsonResponse());
     }
 
@@ -483,7 +483,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $response = $this->getJsonResponse();
         $this->assertArraySubset([
-            'articlesCount' => 2
+            'articlesCount' => 2,
         ], $response);
 
         $articles = TableRegistry::get('Articles')->find()
@@ -506,7 +506,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $response = $this->getJsonResponse();
         $this->assertArraySubset([
-            'articlesCount' => 25
+            'articlesCount' => 25,
         ], $response);
         $this->assertCount(20, $response['articles'], 'Expected feed to set default limit to 20');
 
@@ -514,7 +514,7 @@ class ArticlesServiceTest extends IntegrationTestCase
         $this->assertResponseSuccess();
         $response = $this->getJsonResponse();
         $this->assertArraySubset([
-            'articlesCount' => 25
+            'articlesCount' => 25,
         ], $response);
         $this->assertCount(10, $response['articles'], 'Expected feed to set limit to 10');
         $articles = TableRegistry::get('Articles')->find()
@@ -547,9 +547,9 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'author' => [
                         'username' => $this->user->username,
                         'following' => true,
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ], $response);
 
         TableRegistry::get('Articles')->favorite($article->id, $this->loggedInUser->id);
@@ -565,9 +565,9 @@ class ArticlesServiceTest extends IntegrationTestCase
                     'author' => [
                         'username' => $this->user->username,
                         'following' => true,
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 

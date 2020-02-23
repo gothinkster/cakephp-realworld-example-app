@@ -38,14 +38,14 @@ class Tag extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'id' => false,
     ];
 
-    /**
-     * Label getter.
-     *
-     * @return string
-     */
+/**
+ * Label getter.
+ *
+ * @return string
+ */
 // @codingStandardsIgnoreStart
     public function _getTag()
     {

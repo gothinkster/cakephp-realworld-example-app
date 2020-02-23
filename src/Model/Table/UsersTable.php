@@ -52,7 +52,7 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany('SocialAccounts', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
     }
 
@@ -178,8 +178,8 @@ class UsersTable extends Table
                         'OR' => [
                             ['Follows.follower_id' => $options['currentUser']],
                             ['Follows.follower_id IS' => null],
-                        ]
-                    ]
+                        ],
+                    ],
                 ])
                 ->select('Follows.id');
         }
@@ -204,7 +204,7 @@ class UsersTable extends Table
                             'email' => Hash::get($row, 'email'),
                             'bio' => Hash::get($row, 'bio'),
                             'image' => Hash::get($row, 'image'),
-                            'token' => Hash::get($row, 'token')
+                            'token' => Hash::get($row, 'token'),
 
                         ];
                     } else {
@@ -245,7 +245,7 @@ class UsersTable extends Table
     {
         return $this->find('apiFormat', $options)
           ->where([
-              'Users.id' => $id
+              'Users.id' => $id,
           ])
           ->first();
     }

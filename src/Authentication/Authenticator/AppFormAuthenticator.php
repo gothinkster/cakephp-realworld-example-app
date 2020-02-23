@@ -42,7 +42,7 @@ class AppFormAuthenticator extends FormAuthenticator
                     'Login URL %s did not match %s',
                     $request->getUri()->getPath(),
                     $this->getConfig('loginUrl')
-                )
+                ),
             ];
 
             return new Result(null, Result::FAILURE_CREDENTIALS_INVALID, $errors);
@@ -91,5 +91,4 @@ class AppFormAuthenticator extends FormAuthenticator
 
         return $data;
     }
-
 }

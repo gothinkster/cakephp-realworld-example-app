@@ -64,7 +64,7 @@ class RegisterAction extends CrudAction
         $entity = $this->_newEntity();
         $data = Hash::get($this->getData(), 'user');
         $entity = $this->_patchEntity($entity, $data, [
-            'validate' => 'register'
+            'validate' => 'register',
         ]);
 
         $record = $this->_save($entity);

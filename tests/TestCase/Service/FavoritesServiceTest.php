@@ -70,7 +70,7 @@ class FavoritesServiceTest extends IntegrationTestCase
             'article' => [
                 'favorited' => true,
                 'favoritesCount' => $count,
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -80,7 +80,7 @@ class FavoritesServiceTest extends IntegrationTestCase
             'article' => [
                 'favorited' => false,
                 'favoritesCount' => $count,
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 }

@@ -121,7 +121,7 @@ class AppPaginateExtension extends Extension implements EventListenerInterface
             'offset' => $this->_offset($action),
             'limit' => $limit,
             'pages' => ceil($count / $limit),
-            'count' => $count
+            'count' => $count,
         ];
         $result->appendPayload('pagination', $pagination);
     }

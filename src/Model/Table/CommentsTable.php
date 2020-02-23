@@ -55,12 +55,12 @@ class CommentsTable extends Table
 
         $this->belongsTo('Articles', [
             'foreignKey' => 'article_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Authors', [
             'className' => 'Users',
             'foreignKey' => 'author_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

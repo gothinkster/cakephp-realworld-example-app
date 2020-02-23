@@ -46,15 +46,15 @@ class ArticlesService extends FallbackService
         $this->mapAction('favorite', ArticleFavoriteAction::class, [
             'method' => ['POST'],
             'mapCors' => true,
-            'path' => ':id/favorite'
+            'path' => ':id/favorite',
         ]);
         $this->mapAction('unfavorite', ArticleUnfavoriteAction::class, [
             'method' => ['DELETE'],
             'mapCors' => true,
-            'path' => ':id/favorite'
+            'path' => ':id/favorite',
         ]);
         $this->_innerServices = [
-            'comments'
+            'comments',
         ];
     }
 

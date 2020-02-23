@@ -53,7 +53,7 @@ class ArticleViewAction extends CrudAction
     {
         $record = $this->getTable()
               ->find('apiFormat', [
-                  'currentUser' => $this->Auth->user('id')
+                  'currentUser' => $this->Auth->user('id'),
               ])
               ->where(['Articles.slug' => $this->_id])
               ->firstOrFail();

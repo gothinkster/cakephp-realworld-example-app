@@ -30,7 +30,7 @@ class CommentsFactory extends AbstractFactory
 //
 //                return $users[rand(0, count($users) - 1)]->id;
 //            }
-            'author_id' => 'factory|' . UsersFactory::class
+            'author_id' => 'factory|' . UsersFactory::class,
         ];
     }
 }

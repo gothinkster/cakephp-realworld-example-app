@@ -28,7 +28,6 @@ use Cake\Utility\Hash;
  */
 class LoginAction extends Action
 {
-
     use LoginTrait;
 
     protected $_identifiedField = 'email';

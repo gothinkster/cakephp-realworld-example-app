@@ -23,7 +23,7 @@ class ArticleIndexBase extends CrudAction
      * @var array
      */
     public $extensions = [
-        'AppPaginate'
+        'AppPaginate',
     ];
 
     /**

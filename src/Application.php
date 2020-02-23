@@ -17,11 +17,11 @@ use Authentication\Authenticator\FormAuthenticator;
 use Authentication\Middleware\AuthenticationMiddleware;
 use CakeDC\Api\Middleware\ApiMiddleware;
 use CakeDC\Api\Middleware\RequestHandlerMiddleware;
+use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\Core\Configure;
 
 /**
  * Application setup class.
@@ -32,6 +32,9 @@ use Cake\Core\Configure;
 class Application extends BaseApplication
 {
 
+    /**
+     * Bootstrap the application.
+     */
     public function bootstrap()
     {
         parent::bootstrap();
@@ -44,7 +47,6 @@ class Application extends BaseApplication
         }
 
         $this->addPlugin('Migrations');
-
 
         $this->addPlugin('Muffin/Slug');
         $this->addPlugin('Muffin/Tags');
@@ -78,7 +80,7 @@ class Application extends BaseApplication
             'baseModel' => 'user',
             'fields' => [
                 'username' => 'email',
-                'password' => 'password'
+                'password' => 'password',
             ],
         ]);
         $service->loadIdentifier(\Authentication\Identifier\PasswordIdentifier::class, [

@@ -19,7 +19,7 @@ cache:
 
 env:
   matrix:
-    - DB=mysql DATABASE_TEST_URL='mysql://root@127.0.0.1/cakephp_test?init[]=SET sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"'
+    - DB=mysql DATABASE_TEST_URL='mysql://root:@127.0.0.1/cakephp_test?init[]=SET sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"'
     - DB=pgsql DATABASE_TEST_URL='postgres://postgres@127.0.0.1/cakephp_test'
     - DB=sqlite DATABASE_TEST_URL='sqlite:///:memory:'
 

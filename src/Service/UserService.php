@@ -24,7 +24,7 @@ class UserService extends FallbackService
      * @var array
      */
     protected $_actionsClassMap = [
-        'index' => UserViewAction::class
+        'index' => UserViewAction::class,
     ];
 
     /**
@@ -38,7 +38,7 @@ class UserService extends FallbackService
         $this->mapAction('update', UserEditAction::class, [
             'method' => ['PUT', 'PATCH'],
             'path' => '',
-            'mapCors' => true
+            'mapCors' => true,
         ]);
         $this->_table = 'users';
     }

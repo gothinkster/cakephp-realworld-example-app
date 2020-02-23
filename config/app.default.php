@@ -281,7 +281,7 @@ return [
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
             'username' => 'my_app',
-            'password' => 'secret',
+            'password' => '',
             'database' => 'test_myapp',
             'encoding' => 'utf8',
             'timezone' => 'UTC',

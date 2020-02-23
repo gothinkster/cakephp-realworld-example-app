@@ -21,7 +21,7 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'bio' => $this->user->bio,
                 'image' => $this->user->image,
                 'following' => false,
-            ]
+            ],
         ], $this->getJsonResponse());
     }
 
@@ -41,7 +41,7 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'bio' => $this->user->bio,
                 'image' => $this->user->image,
                 'following' => true,
-            ]
+            ],
         ], $this->getJsonResponse());
         $Follows = TableRegistry::get('Follows');
         $this->assertTrue($Follows->following($this->loggedInUser->id, $this->user->id), 'Failed to follow user');
@@ -54,7 +54,7 @@ class ProfilesServiceTest extends IntegrationTestCase
                 'bio' => $this->user->bio,
                 'image' => $this->user->image,
                 'following' => false,
-            ]
+            ],
         ], $this->getJsonResponse());
         $this->assertFalse($Follows->following($this->loggedInUser->id, $this->user->id), 'Failed to unfollow user');
     }

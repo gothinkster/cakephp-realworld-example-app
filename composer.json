@@ -54,6 +54,12 @@
     "config": {
         "minimum-stability": "dev"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:skie/Tags-1.git"
+        }
+    ],
 	"minimum-stability": "dev",
     "prefer-stable": true
 }

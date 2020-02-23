@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b504b44a26975f57158d57ec6a500b3",
+    "content-hash": "a9635b00b605ed49bd36ebbb469e8da2",
     "packages": [
         {
             "name": "aura/intl",
@@ -105,16 +105,16 @@
         },
         {
             "name": "cakedc/cakephp-api",
-            "version": "7.0.2",
+            "version": "7.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/cakephp-api.git",
-                "reference": "dac0a10c3ebe750ee6fd88f31fac121f990d5969"
+                "reference": "59430c642d1fb6a7fbf58b377360b84aed2253f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/dac0a10c3ebe750ee6fd88f31fac121f990d5969",
-                "reference": "dac0a10c3ebe750ee6fd88f31fac121f990d5969",
+                "url": "https://api.github.com/repos/CakeDC/cakephp-api/zipball/59430c642d1fb6a7fbf58b377360b84aed2253f1",
+                "reference": "59430c642d1fb6a7fbf58b377360b84aed2253f1",
                 "shasum": ""
             },
             "require": {
@@ -157,7 +157,7 @@
                 "crud",
                 "rest"
             ],
-            "time": "2019-08-05T12:21:50+00:00"
+            "time": "2020-02-23T20:05:53+00:00"
         },
         {
             "name": "cakedc/users",
@@ -291,16 +291,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.8.9",
+            "version": "3.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "1e5da0893ecf89baa2fd3cce2862c24d9fb9b9b3"
+                "reference": "a5b75c3a9d0c3ed99a2220d9114571d383acf214"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/1e5da0893ecf89baa2fd3cce2862c24d9fb9b9b3",
-                "reference": "1e5da0893ecf89baa2fd3cce2862c24d9fb9b9b3",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/a5b75c3a9d0c3ed99a2220d9114571d383acf214",
+                "reference": "a5b75c3a9d0c3ed99a2220d9114571d383acf214",
                 "shasum": ""
             },
             "require": {
@@ -376,7 +376,7 @@
                 "rapid-development",
                 "validation"
             ],
-            "time": "2020-01-25T01:41:07+00:00"
+            "time": "2020-02-22T01:47:48+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -851,13 +851,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/UseMuffin/Tags.git",
-                "reference": "6fb767375a39829ea348d64b8fd1b0204b9f26ff"
+                "url": "https://github.com/skie/Tags-1.git",
+                "reference": "114bfbc079f099964e43f650721e7937d46698fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UseMuffin/Tags/zipball/6fb767375a39829ea348d64b8fd1b0204b9f26ff",
-                "reference": "6fb767375a39829ea348d64b8fd1b0204b9f26ff",
+                "url": "https://api.github.com/repos/skie/Tags-1/zipball/114bfbc079f099964e43f650721e7937d46698fd",
+                "reference": "114bfbc079f099964e43f650721e7937d46698fd",
                 "shasum": ""
             },
             "require": {
@@ -875,7 +875,11 @@
                     "Muffin\\Tags\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Muffin\\Tags\\Test\\": "tests"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -902,7 +906,11 @@
                 "muffin",
                 "tags"
             ],
-            "time": "2019-02-11T12:08:49+00:00"
+            "support": {
+                "issues": "https://github.com/usemuffin/tags/issues",
+                "source": "https://github.com/usemuffin/tags"
+            },
+            "time": "2020-02-23T20:08:27+00:00"
         },
         {
             "name": "psr/container",

@@ -31,9 +31,8 @@ use Cake\Routing\Middleware\RoutingMiddleware;
  */
 class Application extends BaseApplication
 {
-
     /**
-     * Bootstrap the application.
+     * {@inheritdoc}
      */
     public function bootstrap()
     {
